@@ -5,7 +5,6 @@ import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
