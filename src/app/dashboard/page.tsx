@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SideBar from "./SideBar";
 import MobileSideBar from "./MobileSideBar";
 import Orders from "./Orders";
+import Products from "./Products";
 
 const page = () => {
   const [selectedItem, setSelectedItem] = useState("Orders");
@@ -21,7 +22,7 @@ const page = () => {
         {/* Orders */}
         {selectedItem === "Orders" && <Orders />}
         {/* Products */}
-        {selectedItem === "Products" && <div>Product</div>}
+        {selectedItem === "Products" && <Products />}
       </MaxWidthWrapper>
     </div>
   );

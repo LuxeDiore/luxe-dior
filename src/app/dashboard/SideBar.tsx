@@ -17,7 +17,7 @@ const SideBar = ({
     },
   ];
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)] w-[10rem] sm:w-[17rem] border-0 border-r-2 nav-hidden">
+    <div className="flex flex-col sticky h-[calc(100vh-3.5rem)] w-[10rem] sm:w-[17rem] border-0 border-r-2 nav-hidden">
       {menuItems.map((item) => {
         return (
           <p

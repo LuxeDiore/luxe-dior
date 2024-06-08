@@ -7,6 +7,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { SignOutButton } from "@clerk/nextjs";
 import { categories } from "@/data/data";
 import HamBurgerMenu from "./HamBurgerMenu";
+import Logo from "./Logo";
 
 const NavBar = async () => {
   const user = await currentUser();
@@ -16,9 +17,7 @@ const NavBar = async () => {
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200  backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
-          <Link href="/" className="flex z-14 font-semibold gap-1">
-            <span className="text-orange-500">Luxe </span> Diore
-          </Link>
+          <Logo />
           <div className="h-full  items-center space-x-4  nav-hidden">
             {categories?.map((category, key) => {
               return (
