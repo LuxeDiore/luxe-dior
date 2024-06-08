@@ -39,18 +39,19 @@ const HamBurgerMenu = ({ user }: { user: ClerkUser | null }) => {
           <SheetHeader>
             <SheetDescription className="h-[100vh] flex justify-between flex-col">
               <div className="pt-14">
-                <h2 className="w-full border-0 font-semibold border-b-2 text-2xl h-10">
+                <h2 className="w-full border-0 font-semibold border-b-2 text-2xl h-10 flex justify-center items-center">
                   Categories
                 </h2>
                 <div>
                   {categories?.map((category, key) => {
                     return (
-                      <div
+                      <Link
+                        href={category.link}
                         key={category?.title}
                         className=" h-10 flex justify-center items-center"
                       >
                         {category?.title}
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>

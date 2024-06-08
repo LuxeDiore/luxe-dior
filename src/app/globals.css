@@ -83,6 +83,10 @@
 .ham-show {
   display: none;
 }
+.dashboard-nav {
+  flex-direction: row;
+}
+
 @media all and (max-width: 800px) {
   .nav-hidden {
     display: none;
@@ -90,5 +94,17 @@
 
   .ham-show {
     display: flex;
+  }
+  .dashboard-nav {
+    flex-direction: column;
+  }
+}
+
+@media all and (max-width: 450px) {
+  .order-heading {
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    gap: 2rem;
   }
 }
