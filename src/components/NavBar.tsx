@@ -23,6 +23,7 @@ const NavBar = async () => {
             {categories?.map((category, key) => {
               return (
                 <Link
+                  key={category.title}
                   href={category.link}
                   className={buttonVariants({
                     size: "sm",
