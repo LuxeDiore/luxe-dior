@@ -30,8 +30,11 @@ import { productInfo, variantInfo } from "@/types/product";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { categories } from "@/data/category";
 import AddNewVariant from "./AddNewVariant";
+import { createProductServerHandler } from "./actions/action";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddProductComponent = () => {
+  const { toast } = useToast();
   const [item, setItem] = useState<productInfo>({
     _id: "",
     title: "",
@@ -47,7 +50,49 @@ const AddProductComponent = () => {
   });
   const [variants, setVariants] = useState<variantInfo[]>([]);
 
-  const AddProduct = async () => {};
+  const createProductHandler = async () => {
+    toast({
+      title: "Creating product...",
+      variant: "default",
+    });
+
+    if (
+      item.title.trim().length == 0 ||
+      item.description.trim().length == 0 ||
+      item.price == 0 ||
+      item.category.trim().length == 0 ||
+      item.quantity == 0 ||
+      variants.length == 0
+    ) {
+      toast({
+        title: "Please fill in all details to continue.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const res = await createProductServerHandler({ item, variants });
+
+    if (res.success) {
+      toast({
+        title: "Product added successfully.",
+        variant: "default",
+      });
+      setVariants([]);
+      setItem({
+        _id: "",
+        title: "",
+        description: "",
+        price: 0,
+        category: "",
+        quantity: 0,
+        ratings: [],
+        reviews: [],
+        stock: 0,
+        variants: [],
+        variantsCount: 0,
+      });
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -255,7 +300,9 @@ const AddProductComponent = () => {
               </div>
             </div>
             <Button
-              onClick={AddProduct}
+              onClick={() => {
+                createProductHandler();
+              }}
               className={cn(
                 buttonVariants({
                   size: "sm",

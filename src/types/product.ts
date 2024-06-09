@@ -9,7 +9,7 @@ export interface reviewInfo {
 
 export interface variantInfo {
   name: string;
-  images: string[];
+  images: any[];
   additionalCost: number;
 }
 export interface productInfo {
