@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCardDashboard from "./ProductCardDashboard";
+import ProductCardDashboard from "./ProductCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Pagination,
@@ -129,6 +129,7 @@ const ProductGrid = ({ keyword }: { keyword: string }) => {
       ],
     },
   ];
+
   return (
     <ScrollArea className="h-[calc(100vh-13rem)]">
       <div className="grid product-grid-dashboard gap-y-5 py-4">

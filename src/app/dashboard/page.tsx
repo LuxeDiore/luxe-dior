@@ -1,10 +1,10 @@
 "use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import React, { useState } from "react";
-import SideBar from "./SideBar";
-import MobileSideBar from "./MobileSideBar";
-import Orders from "./Orders";
-import Products from "./Products";
+import SideBar from "./components/SideBar";
+import MobileSideBar from "./components/MobileSideBar";
+import Orders from "./components/order-page/Orders";
+import Products from "./components/product-page/Products";
 
 const page = () => {
   const [selectedItem, setSelectedItem] = useState("Orders");

@@ -35,3 +35,13 @@ export async function createProductServerHandler({
     throw new Error("Error Occured : ", err.message);
   }
 }
+
+export async function getAllProductsHandler() {
+  try {
+    await databasesConnect();
+    const products: productInfo[] = await Product.find();
+    return products;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+}

@@ -1,6 +1,7 @@
+import { productInfo } from "@/types/product";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Edit, Save, Trash2 } from "lucide-react";
+import { Edit, Plus, Save, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -26,16 +27,42 @@ import {
 } from "@/components/ui/accordion";
 
 import { Input } from "@/components/ui/input";
-import { productInfo, variantInfo } from "@/types/product";
+import { variantInfo } from "@/types/product";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { categories } from "@/data/category";
 import AddNewVariant from "./AddNewVariant";
 
-const EditProductComponent = ({ prod }: { prod: productInfo }) => {
-  const [item, setItem] = useState<productInfo>(prod);
-  const [variants, setVariants] = useState<variantInfo[]>(prod.variants);
+const ModifyProductInfo = ({
+  productInfo,
+  type,
+}: {
+  productInfo?: productInfo;
+  type: string;
+}) => {
+  const [item, setItem] = useState<productInfo>(
+    productInfo
+      ? productInfo
+      : {
+          category: "",
+          description: "",
+          price: 0,
+          quantity: 0,
+          ratings: [],
+          reviews: [],
+          stock: 0,
+          title: "",
+          variants: [],
+          variantsCount: 0,
+          _id: "",
+        }
+  );
+  const [variants, setVariants] = useState<variantInfo[]>(
+    productInfo ? productInfo.variants : []
+  );
 
   const updateProduct = async () => {};
+  const addProduct = async () => {};
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -44,17 +71,24 @@ const EditProductComponent = ({ prod }: { prod: productInfo }) => {
             buttonVariants({
               size: "sm",
               variant: "secondary",
-            })
+            }),
+            type == "add" && "h-full flex gap-2 self-center"
           )}
         >
-          <Edit className="w-5 h-5" />
+          {type === "edit" ? (
+            <Edit className="w-5 h-5" />
+          ) : (
+            <Plus className="w-5 h-5" />
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[90%] sm:max-w-[80%] lg:max-w-[50%] edit-product-dialog">
         <DialogHeader>
-          <DialogTitle>Edit Product</DialogTitle>
+          <DialogTitle>
+            {type === "edit" ? "Edit Product" : "Add Product"}
+          </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-[40rem]">
+        <ScrollArea className="max-h-[40rem]">
           <div className="flex items-center space-y-5 flex-col py-2 px-2">
             <div className="md:grid md:grid-cols-12 gap-2 w-full flex flex-col">
               <span className="col-span-2">Title</span>
@@ -242,7 +276,13 @@ const EditProductComponent = ({ prod }: { prod: productInfo }) => {
               </div>
             </div>
             <Button
-              onClick={updateProduct}
+              onClick={() => {
+                if (type === "edit") {
+                  updateProduct();
+                } else {
+                  addProduct();
+                }
+              }}
               className={cn(
                 buttonVariants({
                   size: "sm",
@@ -251,8 +291,8 @@ const EditProductComponent = ({ prod }: { prod: productInfo }) => {
                 "flex gap-2"
               )}
             >
-              <span>Save</span>
-              <Save className="w-5 h-5" />
+              <span>{type === "edit" ? "Save" : "Add"}</span>
+              {type === "edit" ? <Save className="w-5 h-5" /> : null}
             </Button>
           </div>
         </ScrollArea>
@@ -261,4 +301,4 @@ const EditProductComponent = ({ prod }: { prod: productInfo }) => {
   );
 };
 
-export default EditProductComponent;
+export default ModifyProductInfo;

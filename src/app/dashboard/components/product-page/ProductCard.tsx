@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -8,11 +10,10 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
-import EditProductComponent from "./EditProductComponent";
+import ModifyProductInfo from "./ModifyProductInfo";
 import { productInfo } from "@/types/product";
 
-const ProductCardDashboard = ({ item }: { item: productInfo }) => {
+const ProductCard = ({ item }: { item: productInfo }) => {
   return (
     <div className="product-card-dashboard border-2 rounded-xl overflow-hidden flex flex-col gap-2">
       <img
@@ -33,7 +34,7 @@ const ProductCardDashboard = ({ item }: { item: productInfo }) => {
           >
             <CircleArrowOutUpRight className="w-5 h-5" />
           </Link>
-          <EditProductComponent prod={item} />
+          <ModifyProductInfo productInfo={item} type="edit" />
           <Button
             className={cn(
               buttonVariants({
@@ -50,4 +51,4 @@ const ProductCardDashboard = ({ item }: { item: productInfo }) => {
   );
 };
 
-export default ProductCardDashboard;
+export default ProductCard;

@@ -31,18 +31,18 @@ const AddNewVariant = ({
     images: [],
   });
 
-  const [isPending, startTransition] = useTransition();
+  const [fileData, setFileData] = useState<fileDataProps[]>([]);
+
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: ([data]) => {
       const imageUrl = data.url;
       let newImages = newVariant.images;
       newImages.push(imageUrl);
       setNewVariant({ ...newVariant, images: newImages });
-      setFileData([]);
+      // setFileData([]);
     },
   });
 
-  const [fileData, setFileData] = useState<fileDataProps[]>([]);
   const fileUploader = async () => {
     let files = [];
 
@@ -50,22 +50,11 @@ const AddNewVariant = ({
       files.push(ele.file);
     }
 
+    setFileData([]);
     if (!files.length) {
       return;
     }
     startUpload(files as File[], { configId: undefined });
-
-    // for (let ele of fileData!) {
-    //   let data = await cloudinaryUploader({
-    //     ele: ele.file!,
-    //     location: "variant-images",
-    //     type: ele.type,
-    //   });
-
-    //   ans.push(data);
-    // }
-
-    // return ans;
   };
 
   const fileHandler = async (Files: FileList) => {
@@ -108,23 +97,30 @@ const AddNewVariant = ({
       variant: "default",
     });
 
-    await fileUploader().then(() => {
-      let newVariants = variants;
-      newVariants.push({
-        name: newVariant.name,
-        additionalCost: newVariant.additionalCost,
-        images: newVariant.images,
-      });
-      setNewVariant({
-        additionalCost: 0,
-        images: [],
-        name: "",
-      });
-      setVariants(newVariants);
-      toast({
-        title: "Variant added successfully.",
-      });
+    await fileUploader();
+    let newVariants = variants;
+    newVariants.push(newVariant);
+    console.log("new-variants : ", newVariants);
+    console.log("new-variant before : ", newVariant);
+    console.log("file-data before : ", fileData);
+    let newFileData: fileDataProps[] = [];
+    let newNewVariant: variantInfo = {
+      additionalCost: 0,
+      images: [],
+      name: "",
+    };
+    await setFileData(newFileData);
+    await setNewVariant(newNewVariant);
+    await setFileData(newFileData);
+    await setVariants(newVariants);
+
+    toast({
+      title: "Variant added successfully.",
     });
+    console.log("newFileData : ", newFileData);
+    console.log("newNewVariant : ", newNewVariant);
+    console.log("new-variant after : ", newVariant);
+    console.log("file-data after : ", fileData);
   }
 
   return (
