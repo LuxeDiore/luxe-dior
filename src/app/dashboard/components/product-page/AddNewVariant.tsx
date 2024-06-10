@@ -11,8 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { fileDataProps, variantInfo } from "@/types/product";
-import cloudinaryUploader from "@/utils/cloudinary";
+import { fileDataProps, productInfo, variantInfo } from "@/types/product";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -20,9 +19,13 @@ import { useUploadThing } from "@/lib/uploadthing";
 const AddNewVariant = ({
   variants,
   setVariants,
+  setItem,
+  item,
 }: {
   variants: variantInfo[];
   setVariants: React.Dispatch<React.SetStateAction<variantInfo[]>>;
+  setItem: React.Dispatch<React.SetStateAction<productInfo>>;
+  item: productInfo;
 }) => {
   const { toast } = useToast();
   const [newVariant, setNewVariant] = useState<variantInfo>({
@@ -35,15 +38,23 @@ const AddNewVariant = ({
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: ([data]) => {
+      // console.log("Before Uploading : ");
+      // console.log("New variant : ", newVariant);
       const imageUrl = data.url;
       let newImages = newVariant.images;
       newImages.push(imageUrl);
       setNewVariant({ ...newVariant, images: newImages });
+      // console.log("After Uploading : ");
+      // console.log("New variant : ", newVariant);
+      // console.log("..............................");
+
       // setFileData([]);
     },
   });
 
   const fileUploader = async () => {
+    console.log("Before File Uploader : ");
+    console.log("File data : ", fileData);
     let files = [];
 
     for (let ele of fileData) {
@@ -54,11 +65,18 @@ const AddNewVariant = ({
     if (!files.length) {
       return;
     }
-    startUpload(files as File[], { configId: undefined });
+    await startUpload(files as File[], { configId: undefined }).then(() => {
+      console.log("After File Uploader : ");
+      console.log("files : ", files);
+      console.log("file data : ", fileData);
+      console.log("New variant : ", newVariant);
+
+      console.log("..............................");
+    });
   };
 
   const fileHandler = async (Files: FileList) => {
-    let newFileData = fileData;
+    // console.log("Before File Handler : ", fileData);
     for (let i = 0; i < Files.length; i++) {
       let file = Files[i];
       let type = file.type.split("/")[i];
@@ -68,14 +86,19 @@ const AddNewVariant = ({
         type: type,
         file: file,
       };
-      newFileData?.push(image);
+      setFileData((fileData) => [...fileData, image]);
     }
-    setFileData(newFileData);
+    // console.log("After File Handler : ", fileData);
+
+    // console.log("..............................");
   };
   async function submitHandler() {
+    // console.log("Before Submit Handler :");
+    // console.log("item : ", item);
+    // console.log("new-variant before : ", newVariant);
+    // console.log("file-data before : ", fileData);
     let name = newVariant.name.trim();
     if (name.length == 0) {
-      console.log(newVariant);
       toast({
         title: "Please enter a variant name.",
         variant: "destructive",
@@ -83,7 +106,7 @@ const AddNewVariant = ({
       return;
     }
 
-    if (fileData.length == 0) {
+    if (!fileData || fileData!.length == 0) {
       toast({
         title: "Please upload some images for this variant.",
         variant: "destructive",
@@ -97,36 +120,50 @@ const AddNewVariant = ({
       variant: "default",
     });
 
-    await fileUploader();
-    let newVariants = variants;
-    newVariants.push(newVariant);
-    console.log("new-variants : ", newVariants);
-    console.log("new-variant before : ", newVariant);
-    console.log("file-data before : ", fileData);
-    let newFileData: fileDataProps[] = [];
-    let newNewVariant: variantInfo = {
-      additionalCost: 0,
-      images: [],
-      name: "",
-    };
-    await setFileData(newFileData);
-    await setNewVariant(newNewVariant);
-    await setFileData(newFileData);
-    await setVariants(newVariants);
+    await fileUploader().then(() => {
+      let newFileData: fileDataProps[] = [];
+      let newNewVariant: variantInfo = {
+        additionalCost: 0,
+        images: [],
+        name: "",
+      };
+      setVariants((variants) => [...variants, newVariant]);
+      setNewVariant(newNewVariant);
+      setFileData(newFileData);
+      setItem({
+        ...item,
+        variants: variants,
+        variantsCount: variants.length,
+      });
 
-    toast({
-      title: "Variant added successfully.",
+      toast({
+        title: "Variant added successfully.",
+      });
+
+      // console.log("After Submit Handler : ");
+      // console.log("item : ", item);
+      // console.log("new-variant after : ", newVariant);
+      // console.log("file-data after : ", fileData);
+
+      // console.log("..............................");
     });
-    console.log("newFileData : ", newFileData);
-    console.log("newNewVariant : ", newNewVariant);
-    console.log("new-variant after : ", newVariant);
-    console.log("file-data after : ", fileData);
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="w-full">
+        <Button
+          variant="secondary"
+          className="w-full"
+          onClick={() => {
+            setFileData([]);
+            setNewVariant({
+              additionalCost: 0,
+              images: [],
+              name: "",
+            });
+          }}
+        >
           Add new variant
         </Button>
       </DialogTrigger>
@@ -166,12 +203,12 @@ const AddNewVariant = ({
             />
           </div>
           <div className="sm:grid sm:grid-cols-4 flex flex-col sm:items-center gap-2 sm:gap-4">
-            <Label htmlFor="name" className="sm:text-right">
+            <Label htmlFor="new-variant-image" className="sm:text-right">
               Images
             </Label>
             <div className="flex flex-col gap-3 col-span-3">
               <Input
-                id="name"
+                id="new-variant-image"
                 className="w-full"
                 multiple
                 type="file"

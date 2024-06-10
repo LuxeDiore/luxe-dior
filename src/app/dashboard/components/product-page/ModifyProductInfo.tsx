@@ -172,6 +172,8 @@ const ModifyProductInfo = ({
                   <AddNewVariant
                     variants={variants}
                     setVariants={setVariants}
+                    setItem={setItem}
+                    item={item}
                   />
                   <Accordion type="single" collapsible className="w-full ">
                     {variants?.map((variant, key1) => {
@@ -241,29 +243,33 @@ const ModifyProductInfo = ({
                               <div className="flex flex-col gap-2 w-full">
                                 <Input type="file" />
                                 <div className="flex gap-2 flex-wrap">
-                                  {variant?.images?.map((imgSrc, key2) => {
-                                    return (
-                                      <img
-                                        className="w-10 h-10 rounded-lg cursor-pointer"
-                                        src={imgSrc}
-                                        onClick={() => {
-                                          let newVariants = variants;
-                                          let newImages = newVariants[
-                                            key1
-                                          ].images.filter((img) => {
-                                            if (img !== imgSrc) return img;
-                                          });
+                                  {variants[key1]?.images?.map(
+                                    (imgSrc, key2) => {
+                                      return (
+                                        <img
+                                          className="w-10 h-10 rounded-lg cursor-pointer object-cover"
+                                          src={imgSrc}
+                                          key={key2}
+                                          onClick={() => {
+                                            let newVariants = variants;
+                                            let newImages = newVariants[
+                                              key1
+                                            ].images.filter((img) => {
+                                              if (img !== imgSrc) return img;
+                                            });
 
-                                          newVariants[key1].images = newImages;
-                                          setVariants(newVariants);
-                                          setItem({
-                                            ...item,
-                                            variants: newVariants,
-                                          });
-                                        }}
-                                      />
-                                    );
-                                  })}
+                                            newVariants[key1].images =
+                                              newImages;
+                                            setVariants(newVariants);
+                                            setItem({
+                                              ...item,
+                                              variants: newVariants,
+                                            });
+                                          }}
+                                        />
+                                      );
+                                    }
+                                  )}
                                 </div>
                               </div>
                             </div>
