@@ -241,7 +241,6 @@ const ModifyProductInfo = ({
                             <div className="flex gap-2 flex-col">
                               <span>Images</span>
                               <div className="flex flex-col gap-2 w-full">
-                                <Input type="file" />
                                 <div className="flex gap-2 flex-wrap">
                                   {variants[key1]?.images?.map(
                                     (imgSrc, key2) => {
