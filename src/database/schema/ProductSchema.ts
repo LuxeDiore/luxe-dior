@@ -27,6 +27,9 @@ const productSchema = new mongoose.Schema({
       user: { type: mongoose.Types.ObjectId },
     },
   ],
+  averageRating: {
+    type: Number,
+  },
   reviews: [
     {
       review: { type: String },

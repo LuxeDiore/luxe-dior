@@ -43,9 +43,11 @@ import {
 const ModifyProductInfo = ({
   productInfo,
   type,
+  setItems,
 }: {
   productInfo?: productInfo;
   type: string;
+  setItems: React.Dispatch<React.SetStateAction<productInfo[]>>;
 }) => {
   const { toast } = useToast();
   const [item, setItem] = useState<productInfo>(
@@ -113,6 +115,20 @@ const ModifyProductInfo = ({
 
           const res = await getAllProductsServerHandler();
           const products = JSON.parse(res.products!);
+          setItems(products);
+          setItem({
+            category: "",
+            description: "",
+            price: 0,
+            quantity: 0,
+            ratings: [],
+            reviews: [],
+            stock: 0,
+            title: "",
+            variants: [],
+            variantsCount: 0,
+            _id: "",
+          });
         } else {
           toast({
             title: data?.message,

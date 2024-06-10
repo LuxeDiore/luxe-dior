@@ -4,7 +4,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import Product from "../../../database/schema/ProductSchema";
 import databasesConnect from "@/lib/db";
 import { productInfo, variantInfo } from "@/types/product";
-import { NextResponse } from "next/server";
 
 export async function createProductServerHandler({
   item,
@@ -91,6 +90,7 @@ export async function getAllProductsServerHandler() {
     return {
       success: false,
       message: "Some error occured.",
+      products: "[]",
     };
     // throw new Error(err.message);
   }

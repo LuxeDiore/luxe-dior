@@ -14,6 +14,7 @@ export interface variantInfo {
 }
 export interface productInfo {
   _id?: string;
+  averageRating?: number;
   title: string;
   description: string;
   price: number;
