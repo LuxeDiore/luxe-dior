@@ -1,3 +1,5 @@
+"use client";
+
 import { productInfo } from "@/types/product";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -31,6 +33,12 @@ import { variantInfo } from "@/types/product";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { categories } from "@/data/category";
 import AddNewVariant from "./AddNewVariant";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  createProductServerHandler,
+  getAllProductsServerHandler,
+  updateProductServerHandler,
+} from "../../actions/action";
 
 const ModifyProductInfo = ({
   productInfo,
@@ -39,6 +47,7 @@ const ModifyProductInfo = ({
   productInfo?: productInfo;
   type: string;
 }) => {
+  const { toast } = useToast();
   const [item, setItem] = useState<productInfo>(
     productInfo
       ? productInfo
@@ -56,12 +65,65 @@ const ModifyProductInfo = ({
           _id: "",
         }
   );
+
   const [variants, setVariants] = useState<variantInfo[]>(
     productInfo ? productInfo.variants : []
   );
 
   const updateProduct = async () => {};
-  const addProduct = async () => {};
+  const addProduct = async () => {
+    // const data: productInfo = {
+    //   category: item.category,
+    //   description: item.description,
+    //   price: item.price,
+    //   quantity: item.quantity,
+    //   stock: item.stock,
+    //   title: item.title,
+    //   variantsCount: variants.length,
+    //   variants: variants,
+    // };
+    if (
+      item.category.trim().length == 0 ||
+      item.description.trim().length == 0 ||
+      item.price == 0 ||
+      item.quantity == 0 ||
+      item.stock == 0 ||
+      item.title.trim().length == 0 ||
+      variants.length == 0
+    ) {
+      toast({
+        title: "Please fill in all the details",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Updating...",
+      variant: "default",
+    });
+
+    await createProductServerHandler({ item, variants })
+      .then(async (data) => {
+        console.log("data : ", data);
+        if (data.success) {
+          toast({
+            title: data.message,
+            variant: "default",
+          });
+
+          const res = await getAllProductsServerHandler();
+          const products = JSON.parse(res.products!);
+        } else {
+          toast({
+            title: data?.message,
+            variant: "destructive",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("err : ", err);
+      });
+  };
 
   return (
     <Dialog>

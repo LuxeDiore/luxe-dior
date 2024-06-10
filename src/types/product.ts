@@ -19,8 +19,8 @@ export interface productInfo {
   price: number;
   stock: number;
   quantity: number;
-  ratings: ratingInfo[];
-  reviews: reviewInfo[];
+  ratings?: ratingInfo[];
+  reviews?: reviewInfo[];
   category: string;
   variantsCount: number;
   variants: variantInfo[];

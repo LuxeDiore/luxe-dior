@@ -53,8 +53,8 @@ const AddNewVariant = ({
   });
 
   const fileUploader = async () => {
-    console.log("Before File Uploader : ");
-    console.log("File data : ", fileData);
+    // console.log("Before File Uploader : ");
+    // console.log("File data : ", fileData);
     let files = [];
 
     for (let ele of fileData) {
@@ -66,12 +66,11 @@ const AddNewVariant = ({
       return;
     }
     await startUpload(files as File[], { configId: undefined }).then(() => {
-      console.log("After File Uploader : ");
-      console.log("files : ", files);
-      console.log("file data : ", fileData);
-      console.log("New variant : ", newVariant);
-
-      console.log("..............................");
+      // console.log("After File Uploader : ");
+      // console.log("files : ", files);
+      // console.log("file data : ", fileData);
+      // console.log("New variant : ", newVariant);
+      // console.log("..............................");
     });
   };
 

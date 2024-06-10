@@ -1,8 +1,10 @@
 "use server";
+
 import { currentUser } from "@clerk/nextjs/server";
 import Product from "../../../database/schema/ProductSchema";
 import databasesConnect from "@/lib/db";
 import { productInfo, variantInfo } from "@/types/product";
+import { NextResponse } from "next/server";
 
 export async function createProductServerHandler({
   item,
@@ -19,7 +21,7 @@ export async function createProductServerHandler({
       throw new Error("Please login to perform this operation.");
     }
 
-    const product = await Product.create({
+    await Product.create({
       title: item.title,
       description: item.description,
       price: item.price,
@@ -30,18 +32,66 @@ export async function createProductServerHandler({
       variantsCount: variants.length,
     });
 
-    return { success: true };
+    return { success: true, message: "Product created successfully!!" };
   } catch (err: any) {
-    throw new Error("Error Occured : ", err.message);
+    console.log("err message: ", err.message);
+    console.log("err stack: ", err.stack);
+    return {
+      success: false,
+      message: "Some error occured.",
+    };
+    // throw new Error("Error Occured : ", err.message);
   }
 }
 
-export async function getAllProductsHandler() {
+export async function updateProductServerHandler({
+  id,
+  data,
+}: {
+  id: string;
+  data: productInfo;
+}) {
+  try {
+    await databasesConnect();
+    const product = await Product.findById(id);
+
+    if (!product) {
+      throw new Error("No product found.");
+    }
+    product.category = data.category;
+    product.description = data.description;
+    product.price = data.price;
+    product.quantity = data.quantity;
+    product.stock = data.stock;
+    product.title = data.title;
+    product.variants = data.variants;
+    product.variantsCount = data.variants.length;
+
+    await product.save();
+
+    return { success: true, message: "Product updated successfully." };
+  } catch (err) {
+    console.log("err : ", err);
+    return { success: false, message: "Some error occured." };
+  }
+}
+
+export async function getAllProductsServerHandler() {
   try {
     await databasesConnect();
     const products: productInfo[] = await Product.find();
-    return products;
+    const productsString: string = JSON.stringify(products);
+    return {
+      success: true,
+      products: productsString,
+      message: "All products fetched",
+    };
   } catch (err: any) {
-    throw new Error(err.message);
+    console.log("err : ", err);
+    return {
+      success: false,
+      message: "Some error occured.",
+    };
+    // throw new Error(err.message);
   }
 }
