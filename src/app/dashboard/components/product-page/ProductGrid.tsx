@@ -139,7 +139,17 @@ const ProductGrid = ({
   //     ],
   //   },
   // ];
-
+  const [pageNo, setPageNo] = useState(1);
+  const itemsPerPage = 10;
+  const nextPage = () => {
+    const lastPossiblePage = Math.ceil(items.length / itemsPerPage);
+    if (lastPossiblePage >= pageNo) return;
+    setPageNo(pageNo + 1);
+  };
+  const prevPage = () => {
+    if (pageNo == 1) return;
+    setPageNo(pageNo - 1);
+  };
   return (
     <ScrollArea className="h-[calc(100vh-13rem)]">
       <div className="h-full justify-between flex flex-col gap-5">
@@ -148,18 +158,23 @@ const ProductGrid = ({
             No products created
           </div>
         ) : (
-          <div className="grid product-grid-dashboard gap-y-5 py-4">
+          <div className="min-h-[calc(100vh-19rem)] grid product-grid-dashboard gap-y-5 py-4 ">
             {items
-              ?.filter((item) => {
+              ?.filter((item, key1) => {
                 let tempKeyword = keyword.trim();
                 if (tempKeyword.length === 0) return item;
                 const itemLowerCase = item.title.toLowerCase();
                 const keywordLowerCase = keyword.toLowerCase();
+                const thisPageStartingElement = (pageNo - 1) * 10 + 1;
+                const thisPageEndingElement = pageNo * 10 + 1;
                 if (
-                  itemLowerCase === keywordLowerCase ||
-                  itemLowerCase.includes(keywordLowerCase) ||
-                  keywordLowerCase.includes(itemLowerCase)
+                  (itemLowerCase === keywordLowerCase ||
+                    itemLowerCase.includes(keywordLowerCase) ||
+                    keywordLowerCase.includes(itemLowerCase)) &&
+                  key1 + 1 >= thisPageStartingElement &&
+                  key1 + 1 < thisPageEndingElement
                 ) {
+                  console.log("key 1 : ", key1);
                   return item;
                 }
               })
@@ -178,25 +193,27 @@ const ProductGrid = ({
         )}
 
         <Pagination>
-          <PaginationContent className="w-[80%]  flex justify-between">
+          <PaginationContent className="w-[90%]  flex justify-between">
             <PaginationItem>
               <PaginationPrevious
-                href="#"
+                onClick={prevPage}
                 className={cn(
                   buttonVariants({
                     variant: "secondary",
-                  })
+                  }),
+                  "cursor-pointer"
                 )}
               />
             </PaginationItem>
 
             <PaginationItem>
               <PaginationNext
-                href="#"
+                onClick={nextPage}
                 className={cn(
                   buttonVariants({
                     variant: "secondary",
-                  })
+                  }),
+                  "cursor-pointer"
                 )}
               />
             </PaginationItem>

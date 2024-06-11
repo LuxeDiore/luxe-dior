@@ -2,17 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  CircleArrowOutUpRight,
-  Edit,
-  Info,
-  SquareArrowUpRight,
-  Trash2,
-} from "lucide-react";
+import { CircleArrowOutUpRight, Trash2 } from "lucide-react";
 import Link from "next/link";
 import ModifyProductInfo from "./ModifyProductInfo";
 import { productInfo } from "@/types/product";
-import { Rating } from "@mui/material";
 import {
   deleteProductServerHandler,
   getAllProductsServerHandler,
@@ -52,9 +45,7 @@ const ProductCard = ({
         alt={item?.variants[0]?.name as string}
         className="w-full object-fill h-[18rem]"
       />
-      <div className="w-full flex items-center justify-center">
-        <Rating value={item?.averageRating} />
-      </div>
+
       <div className="description pb-2">
         <div className="buttons  w-full flex justify-center items-center gap-2">
           <Link
