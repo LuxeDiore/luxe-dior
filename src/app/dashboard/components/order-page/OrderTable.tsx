@@ -87,9 +87,9 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
                 }
                 return false;
               })
-              ?.map((order) => {
+              ?.map((order, key) => {
                 return (
-                  <TableRow>
+                  <TableRow key={key}>
                     <TableCell className="font-medium">INV001</TableCell>
                     <TableCell>{order.orderStatus}</TableCell>
                     <TableCell>{order.paymentMethod}</TableCell>

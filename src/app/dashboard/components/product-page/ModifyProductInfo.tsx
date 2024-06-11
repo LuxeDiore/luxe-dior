@@ -302,7 +302,10 @@ const ModifyProductInfo = ({
                   <Accordion type="single" collapsible className="w-full ">
                     {variants?.map((variant, key1) => {
                       return (
-                        <AccordionItem value={`item-${`variant-${key1}`}`}>
+                        <AccordionItem
+                          key={`item-${`variant-${key1}`}`}
+                          value={`item-${`variant-${key1}`}`}
+                        >
                           <AccordionTrigger>
                             <div className="flex gap-2">
                               {variants[key1]?.name}{" "}

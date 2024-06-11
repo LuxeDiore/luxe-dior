@@ -6,7 +6,7 @@ import MobileSideBar from "./components/MobileSideBar";
 import Orders from "./components/order-page/Orders";
 import Products from "./components/product-page/Products";
 
-const page = () => {
+const Page = () => {
   const [selectedItem, setSelectedItem] = useState("Orders");
   return (
     <div className="flex dashboard-nav">
@@ -28,4 +28,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
