@@ -95,3 +95,18 @@ export async function getAllProductsServerHandler() {
     // throw new Error(err.message);
   }
 }
+
+export async function deleteProductServerHandler({ id }: { id: string }) {
+  try {
+    await Product.findByIdAndDelete(id);
+    return {
+      success: true,
+      message: "Product deleted successfully!!",
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: "Some error occured.",
+    };
+  }
+}

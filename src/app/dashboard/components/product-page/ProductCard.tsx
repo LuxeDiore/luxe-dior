@@ -13,6 +13,11 @@ import Link from "next/link";
 import ModifyProductInfo from "./ModifyProductInfo";
 import { productInfo } from "@/types/product";
 import { Rating } from "@mui/material";
+import {
+  deleteProductServerHandler,
+  getAllProductsServerHandler,
+} from "../../actions/action";
+import { useToast } from "@/components/ui/use-toast";
 
 const ProductCard = ({
   item,
@@ -21,6 +26,25 @@ const ProductCard = ({
   item: productInfo;
   setItems: React.Dispatch<React.SetStateAction<productInfo[]>>;
 }) => {
+  const { toast } = useToast();
+  async function deleteProduct() {
+    await deleteProductServerHandler({ id: item._id! }).then(async (data) => {
+      if (data.success) {
+        toast({
+          title: data.message,
+          variant: "default",
+        });
+        const res = await getAllProductsServerHandler();
+        const products = JSON.parse(res.products!);
+        setItems(products);
+      } else {
+        toast({
+          title: data.message,
+          variant: "destructive",
+        });
+      }
+    });
+  }
   return (
     <div className="product-card-dashboard border-2 rounded-xl overflow-hidden flex flex-col gap-4">
       <img
@@ -56,6 +80,7 @@ const ProductCard = ({
                 variant: "destructive",
               })
             )}
+            onClick={deleteProduct}
           >
             <Trash2 className="w-5 h-5" />
           </Button>
