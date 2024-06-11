@@ -279,7 +279,10 @@ const ModifyProductInfo = ({
                 </SelectTrigger>
                 <SelectContent defaultValue={item?.category}>
                   {categories?.map((category, key) => (
-                    <SelectItem key={key} value={category.value}>
+                    <SelectItem
+                      key={`item-category-${key}`}
+                      value={category.value}
+                    >
                       {category.title}
                     </SelectItem>
                   ))}
@@ -299,7 +302,7 @@ const ModifyProductInfo = ({
                   <Accordion type="single" collapsible className="w-full ">
                     {variants?.map((variant, key1) => {
                       return (
-                        <AccordionItem value={`item-${key1}`}>
+                        <AccordionItem value={`item-${`variant-${key1}`}`}>
                           <AccordionTrigger>
                             <div className="flex gap-2">
                               {variants[key1]?.name}{" "}
@@ -369,7 +372,7 @@ const ModifyProductInfo = ({
                                         <img
                                           className="w-10 h-10 rounded-lg cursor-pointer object-cover"
                                           src={imgSrc}
-                                          key={key2}
+                                          key={`new-variant-img-${key2}`}
                                           onClick={() => {
                                             let newVariants = variants;
                                             let newImages = newVariants[

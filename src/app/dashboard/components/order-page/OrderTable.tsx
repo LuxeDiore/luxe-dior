@@ -57,8 +57,12 @@ const OrderTable = () => {
                     <SelectValue placeholder={deliveryStatus[0]} />
                   </SelectTrigger>
                   <SelectContent>
-                    {deliveryStatus.map((status) => {
-                      return <SelectItem value={status}>{status}</SelectItem>;
+                    {deliveryStatus.map((status, key) => {
+                      return (
+                        <SelectItem key={key} value={status}>
+                          {status}
+                        </SelectItem>
+                      );
                     })}
                   </SelectContent>
                 </Select>
