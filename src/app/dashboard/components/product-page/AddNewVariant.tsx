@@ -65,13 +65,10 @@ const AddNewVariant = ({
     if (!files.length) {
       return;
     }
-    await startUpload(files as File[], { configId: undefined }).then(() => {
-      // console.log("After File Uploader : ");
-      // console.log("files : ", files);
-      // console.log("file data : ", fileData);
-      // console.log("New variant : ", newVariant);
-      // console.log("..............................");
-    });
+
+    for (let ele of files) {
+      await startUpload([ele] as File[], { configId: undefined });
+    }
   };
 
   const fileHandler = async (Files: FileList) => {
@@ -115,7 +112,7 @@ const AddNewVariant = ({
     }
 
     toast({
-      title: "Uploading images...",
+      title: "Uploading images...It may take some time.",
       variant: "default",
     });
 
@@ -126,6 +123,7 @@ const AddNewVariant = ({
         images: [],
         name: "",
       };
+
       setVariants((variants) => [...variants, newVariant]);
       setNewVariant(newNewVariant);
       setFileData(newFileData);
