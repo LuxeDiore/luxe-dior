@@ -72,18 +72,61 @@ const ModifyProductInfo = ({
     productInfo ? productInfo.variants : []
   );
 
-  const updateProduct = async () => {};
+  const updateProduct = async () => {
+    const data: productInfo = {
+      category: item.category,
+      description: item.description,
+      price: item.price,
+      quantity: item.quantity,
+      stock: item.stock,
+      title: item.title,
+      variantsCount: variants.length,
+      variants: variants,
+    };
+
+    if (
+      item.category.trim().length == 0 ||
+      item.description.trim().length == 0 ||
+      item.price == 0 ||
+      item.quantity == 0 ||
+      item.stock == 0 ||
+      item.title.trim().length == 0 ||
+      variants.length == 0
+    ) {
+      toast({
+        title: "Please fill in all the details",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: type === "edit" ? "Updating..." : "Adding...",
+      variant: "default",
+    });
+
+    await updateProductServerHandler({ id: item._id!, data })
+      .then(async (data) => {
+        if (data.success) {
+          toast({
+            title: data.message,
+            variant: "default",
+          });
+          const res = await getAllProductsServerHandler();
+          const products = JSON.parse(res.products!);
+          setItems(products);
+        } else {
+          toast({
+            title: data.message,
+            variant: "destructive",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log("err : ", err);
+      });
+  };
   const addProduct = async () => {
-    // const data: productInfo = {
-    //   category: item.category,
-    //   description: item.description,
-    //   price: item.price,
-    //   quantity: item.quantity,
-    //   stock: item.stock,
-    //   title: item.title,
-    //   variantsCount: variants.length,
-    //   variants: variants,
-    // };
     if (
       item.category.trim().length == 0 ||
       item.description.trim().length == 0 ||
@@ -100,7 +143,7 @@ const ModifyProductInfo = ({
       return;
     }
     toast({
-      title: "Updating...",
+      title: type === "edit" ? "Updating..." : "Adding...",
       variant: "default",
     });
 
