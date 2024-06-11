@@ -2,6 +2,7 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import Product from "../../../database/schema/ProductSchema";
+import Order from "../../../database/schema/OrderSchema";
 import databasesConnect from "@/lib/db";
 import { productInfo, variantInfo } from "@/types/product";
 
@@ -107,6 +108,32 @@ export async function deleteProductServerHandler({ id }: { id: string }) {
     return {
       success: false,
       message: "Some error occured.",
+    };
+  }
+}
+
+// Order Actions
+
+export async function getAllOrdersServerHandler() {
+  try {
+    let orders = await Order.find().populate({
+      path: "user",
+      model: "User",
+      select: ["name"],
+    });
+    let ordersString = JSON.stringify(orders);
+
+    return {
+      success: true,
+      message: "Fetched all orders",
+      orders: ordersString,
+    };
+  } catch (err: any) {
+    console.log("error : ", err.message);
+    return {
+      success: false,
+      message: "Some error occured.",
+      orders: "[]",
     };
   }
 }

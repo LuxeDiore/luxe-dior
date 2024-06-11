@@ -15,7 +15,7 @@ const Orders = () => {
           onChange={(e) => setKeyword(e.target.value)}
         />
       </div>
-      <OrderTable />
+      <OrderTable keyword={keyword} />
     </div>
   );
 };

@@ -9,7 +9,15 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  orderStatus: {
+    type: String,
+    required: true,
+  },
   paymentMethod: {
+    type: String,
+    required: true,
+  },
+  paymentStatus: {
     type: String,
     required: true,
   },
@@ -19,8 +27,15 @@ const orderSchema = new mongoose.Schema({
   },
   items: [
     {
-      product: {
+      productId: {
         type: mongoose.Types.ObjectId,
+      },
+      variant: {
+        name: String,
+        images: [{ type: String }],
+        additionalCost: {
+          type: Number,
+        },
       },
       quantity: {
         type: Number,

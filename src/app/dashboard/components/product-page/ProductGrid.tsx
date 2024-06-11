@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { productInfo } from "@/types/product";
-import { getAllProductsServerHandler } from "../../actions/action";
+
 const ProductGrid = ({
   keyword,
   items,
@@ -164,19 +164,10 @@ const ProductGrid = ({
                 let tempKeyword = keyword.trim();
                 // if (tempKeyword.length === 0) return item;
                 let itemLowerCase = item.title.toLowerCase();
-                let keywordLowerCase = keyword.toLowerCase();
+                let keywordLowerCase = tempKeyword.toLowerCase();
                 let thisPageStartingElement = (pageNo - 1) * 10 + 1;
                 let thisPageEndingElement = pageNo * 10 + 1;
 
-                // console.log("I am in");
-                // console.log("tempKeyword : ", tempKeyword);
-                // console.log("itemLowerCase : ", itemLowerCase);
-                // console.log("keywordLowerCase : ", keywordLowerCase);
-                // console.log(
-                //   "thisPageStartingElement : ",
-                //   thisPageStartingElement
-                // );
-                // console.log("thisPageEndingElement : ", thisPageEndingElement);
                 if (
                   (itemLowerCase === keywordLowerCase ||
                     itemLowerCase.includes(keywordLowerCase) ||
@@ -184,8 +175,6 @@ const ProductGrid = ({
                   key1 + 1 >= thisPageStartingElement &&
                   key1 + 1 < thisPageEndingElement
                 ) {
-                  // console.log("key 1 : ", key1);
-
                   return true;
                 }
                 return false;
