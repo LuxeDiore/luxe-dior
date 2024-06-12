@@ -43,7 +43,7 @@ const ProductCard = ({
       <img
         src={item?.variants[0]?.images[0] as string}
         alt={item?.variants[0]?.name as string}
-        className="w-full object-fill h-[18rem]"
+        className="w-full object-fill h-[25rem]"
       />
 
       <div className="description pb-2">

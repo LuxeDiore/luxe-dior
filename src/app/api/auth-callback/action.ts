@@ -15,18 +15,9 @@ export async function getAuthStatus() {
   });
 
   if (!existingUser) {
-    existingUser = await User.findOne({
-      emailAddress: user.emailAddresses[0].emailAddress,
+    await User.create({
+      clerkId: user?.id,
     });
-
-    if (!existingUser) {
-      const newUser = await User.create({
-        clerkId: user?.id,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        emailAddress: user.emailAddresses[0].emailAddress,
-      });
-    }
   }
 
   return { success: true };

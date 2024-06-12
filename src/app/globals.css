@@ -96,6 +96,9 @@
   box-shadow: 0 0 10px 0 rgba(138, 133, 133, 0.2);
 }
 
+/* .self-image {
+  box-shadow: 0 0 10px 0 rgba(199, 194, 194, 0.559);
+} */
 @media all and (max-width: 800px) {
   .nav-hidden {
     display: none;

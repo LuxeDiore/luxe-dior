@@ -187,6 +187,11 @@ const ProductGrid = ({
                       item={item}
                       key={key}
                     />
+                    <ProductCardDashboard
+                      setItems={setItems}
+                      item={item}
+                      key={key}
+                    />
                   </>
                 );
               })}

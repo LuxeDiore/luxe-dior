@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { LogIn, LogOut, Menu, User } from "lucide-react";
 import Link from "next/link";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
 import { categories } from "@/data/data";
 
@@ -78,10 +78,19 @@ const HamBurgerMenu = ({ user }: { user: ClerkUser | null }) => {
                 <div className="flex border-t-2 h-14 border items-center justify-between p-3 gap-4">
                   {user ? (
                     <>
-                      <Link href="/me" className="flex gap-2 w-full">
-                        <User className=" h-5 w-5" />
+                      <Link
+                        href="/me"
+                        className="flex gap-2 w-full items-center"
+                      >
+                        <img
+                          src={user.imageUrl}
+                          alt=""
+                          className=" h-8 w-8 object-cover rounded-full"
+                        />
+                        {/* <User className=" h-5 w-5" /> */}
                         {user?.fullName}
                       </Link>
+
                       <div className="h-8 w-px bg-zinc-200" />
                     </>
                   ) : null}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { LogIn, LogOut, User } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { categories } from "@/data/data";
 import HamBurgerMenu from "./HamBurgerMenu";
 import Logo from "./Logo";
@@ -60,13 +60,24 @@ const NavBar = async () => {
                   </>
                 ) : null}
                 <div className="h-8 w-px bg-zinc-200" />
-                <Link href="/me">
+                {/* <Link href="/me">
                   <User className=" h-5 w-5" />
-                </Link>
+                </Link> */}
+                <UserButton
+                  afterSignOutUrl="/"
+                  showName
+                  userProfileUrl="/me"
+                  userProfileMode="navigation"
+                  appearance={{
+                    variables: {
+                      colorText: "white",
+                    },
+                  }}
+                />
 
-                <SignOutButton redirectUrl="/">
+                {/* <SignOutButton redirectUrl="/">
                   <LogOut className="w-5 h-5 hover:cursor-pointer" />
-                </SignOutButton>
+                </SignOutButton> */}
               </>
             ) : (
               <>
