@@ -8,7 +8,7 @@ import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { categories } from "@/data/data";
 import HamBurgerMenu from "./HamBurgerMenu";
 import Logo from "./Logo";
-
+import { dark } from "@clerk/themes";
 const NavBar = async () => {
   const user = await currentUser();
   const isAdmin =
@@ -69,6 +69,7 @@ const NavBar = async () => {
                   userProfileUrl="/me"
                   userProfileMode="navigation"
                   appearance={{
+                    baseTheme: dark,
                     variables: {
                       colorText: "white",
                     },
