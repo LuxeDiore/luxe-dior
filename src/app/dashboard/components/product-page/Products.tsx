@@ -9,10 +9,10 @@ const Products = () => {
   const [items, setItems] = useState<productInfo[]>([]);
 
   const getAllProducts = async () => {
-    const res = await getAllProductsServerHandler();
-    const products: productInfo[] = JSON.parse(res.products!);
-
-    setItems(products);
+    await getAllProductsServerHandler().then((data) => {
+      const products: productInfo[] = JSON.parse(data!.products!);
+      setItems(products);
+    });
   };
   useEffect(() => {
     getAllProducts();

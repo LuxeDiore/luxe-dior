@@ -2,10 +2,12 @@ import Product from "@/database/schema/ProductSchema";
 import User from "@/database/schema/UserSchema";
 import Order from "@/database/schema/OrderSchema";
 import { currentUser } from "@clerk/nextjs/server";
+import dbConnect from "@/lib/db";
 
 // Product Controller
 export async function getLatestProducts() {
   try {
+    await dbConnect();
     const products = await Product.find().sort({ createdAt: -1 }).limit(5);
     const productsString = JSON.stringify(products);
     return {
@@ -20,6 +22,7 @@ export async function getLatestProducts() {
 }
 export async function getBestSellerProducts() {
   try {
+    await dbConnect();
     const products = await Product.find()
       .sort({ productSold: -1, averageRating: -1 })
       .limit(5);
@@ -37,6 +40,7 @@ export async function getBestSellerProducts() {
 
 export async function getAllProducts({ type }: { type: string }) {
   try {
+    await dbConnect();
     const products = await Product.find({ category: type });
     const productsString = JSON.stringify(products);
     return {
@@ -53,6 +57,7 @@ export async function getAllProducts({ type }: { type: string }) {
 // User Controller
 export async function getSelfDetail({ clerkId }: { clerkId: string }) {
   try {
+    await dbConnect();
     const clerkUser = await currentUser();
     if (!clerkUser) {
       return {
@@ -89,6 +94,7 @@ export async function getSelfDetail({ clerkId }: { clerkId: string }) {
 
 export async function getSelfOrders({ clerkId }: { clerkId: string }) {
   try {
+    await dbConnect();
     const user = await User.findOne({ clerkId: clerkId });
 
     if (!user) {

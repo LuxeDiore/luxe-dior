@@ -45,10 +45,11 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
   };
 
   const getAllOrders = async () => {
-    const res = await getAllOrdersServerHandler();
-    const ordersString = res.orders;
-    const resOrders = JSON.parse(ordersString);
-    setOrders(resOrders);
+    await getAllOrdersServerHandler().then((data) => {
+      const ordersString = data!.orders!;
+      const resOrders = JSON.parse(ordersString);
+      setOrders(resOrders);
+    });
   };
 
   useEffect(() => {

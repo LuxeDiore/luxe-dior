@@ -1,17 +1,19 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast";
-import { User, auth } from "@clerk/nextjs/server";
+import { User } from "@clerk/nextjs/server";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { getSelf } from "../action";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { dark, neobrutalism } from "@clerk/themes";
+import { dark } from "@clerk/themes";
 
 import { UserProfile } from "@clerk/nextjs";
+import OrderTable from "./OrderTable";
+import { OrderType } from "@/types/order";
 
 const Page = () => {
   const [user, setUser] = useState<User>();
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<OrderType[]>([]);
   const { toast } = useToast();
   const router = useRouter();
   const getUser = async () => {
@@ -26,7 +28,6 @@ const Page = () => {
         return;
       }
       const user = JSON.parse(self.user);
-      console.log("user : ", user);
       const orders = JSON.parse(self.orders);
       setOrders(orders);
       setUser(user!);
@@ -48,10 +49,11 @@ const Page = () => {
           baseTheme: dark,
         }}
       />
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-5">
         <h1 className="text-3xl md:text-5xl font-semibold text-gray-500">
           My Orders
         </h1>
+        <OrderTable orders={orders} />
       </div>
     </MaxWidthWrapper>
   );

@@ -99,6 +99,7 @@ export async function getAllProductsServerHandler() {
 
 export async function deleteProductServerHandler({ id }: { id: string }) {
   try {
+    await databasesConnect();
     await Product.findByIdAndDelete(id);
     return {
       success: true,
@@ -116,6 +117,7 @@ export async function deleteProductServerHandler({ id }: { id: string }) {
 
 export async function getAllOrdersServerHandler() {
   try {
+    await databasesConnect();
     let orders = await Order.find().populate({
       path: "user",
       model: "User",
