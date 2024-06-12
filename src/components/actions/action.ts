@@ -1,15 +1,20 @@
-import Product from "@/database/schema/ProductSchema";
-import User from "@/database/schema/UserSchema";
-import Order from "@/database/schema/OrderSchema";
-import { currentUser } from "@clerk/nextjs/server";
-import dbConnect from "@/lib/db";
+// import Product from "../database/schema/ProductSchema";
+"use server";
 
+import User from "../../database/schema/UserSchema";
+import Order from "../../database/schema/OrderSchema";
+import { currentUser } from "@clerk/nextjs/server";
+import databasesConnect from "@/lib/db";
+import { productInfo } from "@/types/product";
+import Product from "@/database/schema/ProductSchema";
 // Product Controller
 export async function getLatestProducts() {
   try {
-    await dbConnect();
-    const products = await Product.find().sort({ createdAt: -1 }).limit(5);
-    const productsString = JSON.stringify(products);
+    await databasesConnect();
+    const products: productInfo[] = await Product.find()
+      .sort({ createdAt: -1 })
+      .limit(4);
+    const productsString: string = JSON.stringify(products);
     return {
       success: true,
       message: "Fetched all latest products",
@@ -22,10 +27,10 @@ export async function getLatestProducts() {
 }
 export async function getBestSellerProducts() {
   try {
-    await dbConnect();
+    await databasesConnect();
     const products = await Product.find()
       .sort({ productSold: -1, averageRating: -1 })
-      .limit(5);
+      .limit(4);
     const productsString = JSON.stringify(products);
     return {
       success: true,
@@ -40,7 +45,7 @@ export async function getBestSellerProducts() {
 
 export async function getAllProducts({ type }: { type: string }) {
   try {
-    await dbConnect();
+    await databasesConnect();
     const products = await Product.find({ category: type });
     const productsString = JSON.stringify(products);
     return {
@@ -57,7 +62,7 @@ export async function getAllProducts({ type }: { type: string }) {
 // User Controller
 export async function getSelfDetail({ clerkId }: { clerkId: string }) {
   try {
-    await dbConnect();
+    await databasesConnect();
     const clerkUser = await currentUser();
     if (!clerkUser) {
       return {
@@ -94,11 +99,15 @@ export async function getSelfDetail({ clerkId }: { clerkId: string }) {
 
 export async function getSelfOrders({ clerkId }: { clerkId: string }) {
   try {
-    await dbConnect();
+    await databasesConnect();
     const user = await User.findOne({ clerkId: clerkId });
 
     if (!user) {
-      return { success: false, message: "No user found.", orders: "[]" };
+      return {
+        success: false,
+        message: "Please login to access this page.",
+        orders: "[]",
+      };
     }
 
     const userId = user._id;

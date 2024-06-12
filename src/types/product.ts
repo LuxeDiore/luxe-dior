@@ -1,15 +1,17 @@
+import { User } from "./user";
+
 export interface ratingInfo {
   value: number;
-  user: any;
+  user: string | User;
 }
 export interface reviewInfo {
   review: string;
-  user: any;
+  user: string | User;
 }
 
 export interface variantInfo {
   name: string;
-  images: any[];
+  images: string[];
   additionalCost: number;
 }
 export interface productInfo {
@@ -25,6 +27,8 @@ export interface productInfo {
   category: string;
   variantsCount: number;
   variants: variantInfo[];
+  productSold: number;
+  createdAt?: any;
 }
 
 export interface fileDataProps {

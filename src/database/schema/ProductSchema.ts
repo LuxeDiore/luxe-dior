@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema({
   ratings: [
     {
       value: { type: Number },
-      user: { type: mongoose.Types.ObjectId },
+      user: { type: mongoose.Schema.Types.ObjectId },
     },
   ],
   averageRating: {
@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
   reviews: [
     {
       review: { type: String },
-      user: { type: mongoose.Types.ObjectId },
+      user: { type: mongoose.Schema.Types.ObjectId },
     },
   ],
   category: {
