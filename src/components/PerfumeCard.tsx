@@ -42,20 +42,22 @@ const PerfumeCard = ({ item }: { item: productInfo }) => {
         })}
       </Slider>
       <div className="flex flex-col gap-2 py-3">
-        <div className="w-full flex justify-center item-center">
+        <div className="w-full flex justify-center item-center text-sm">
           <Rating value={item?.averageRating} readOnly />(
           {item?.ratings?.length})
         </div>
         <div className="flex flex-col w-full items-center">
           <p
             className={cn(
-              "text-xl font-semibold text-gray-300",
+              "text-lg font-semibold text-gray-300",
               "hover:underline cursor-pointer"
             )}
           >
             {item?.title}
           </p>
-          <p className=" font-semibold text-gray-400 text-lg">₹{item?.price}</p>
+          <p className=" font-semibold text-gray-400 text-base">
+            ₹{item?.price}
+          </p>
           <p className=" font-semibold text-xs text-gray-400">
             ({item?.quantity} ml)
           </p>

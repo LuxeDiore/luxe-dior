@@ -33,6 +33,8 @@
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.2.0",
     "clsx": "^2.1.1",
+    "embla-carousel": "^8.1.5",
+    "embla-carousel-react": "^8.1.5",
     "framer-motion": "^11.2.10",
     "lucide-react": "^0.390.0",
     "mongodb": "^6.7.0",

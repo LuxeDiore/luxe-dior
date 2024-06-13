@@ -196,6 +196,15 @@
     width: 100%;
   }
 }
+
+@media all and (max-width: 1050px) {
+  .product-description-images {
+    width: 100% !important;
+  }
+  .product-description-page-container {
+    flex-direction: column;
+  }
+}
 @media all and (min-width: 1100px) {
   .product-card-client-grid {
     grid-template-columns: repeat(4, 1fr);

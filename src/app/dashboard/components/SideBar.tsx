@@ -13,7 +13,7 @@ const SideBar = ({
       title: "Orders",
     },
     {
-      title: "Products",
+      title: "Perfumes",
     },
   ];
   return (

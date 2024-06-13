@@ -1,6 +1,8 @@
 "use server";
 
-import { getSelfOrders } from "@/app/action";
+// import { getSelfOrders } from "@/app/action";
+
+import { getSelfOrders } from "@/components/actions/action";
 import { User, currentUser } from "@clerk/nextjs/server";
 
 export async function getSelf() {
