@@ -49,17 +49,18 @@ const CartItemCard = ({
       if (action === "decrease") {
         newItemQuantity -= 1;
         if (item?.itemQuantity === 1) {
+          toast({
+            title: "Item removed from cart.",
+            variant: "default",
+          });
           await updateCartServerHandler({
             type: "delete",
             newItemQuantity: 0,
             productId: item?.productId?._id,
             variantId: item?.variantId,
+          }).then(async () => {
+            await getCartItems();
           });
-          toast({
-            title: "Item removed from cart.",
-            variant: "default",
-          });
-          await getCartItems();
 
           return;
         }
@@ -94,6 +95,8 @@ const CartItemCard = ({
       });
     }
     await getCartItems();
+
+    // window.location.reload();
   };
   useEffect(() => {
     setItem(cartItem);
@@ -103,7 +106,7 @@ const CartItemCard = ({
       <img
         src={item.images[0]}
         alt=""
-        className=" object-cover md:h-[7rem] h-[15rem] w-[100%] md:w-[7rem]"
+        className=" object-fill md:h-[7rem] h-[15rem] w-[100%] md:!min-w-[8rem] md:max-w-[8rem]"
       />
       <div className="flex gap-1 flex-col w-[100%] justify-center items-center md:items-start md:w-[50%]">
         <p className="text-xl font-semibold">{item?.title}</p>

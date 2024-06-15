@@ -80,8 +80,8 @@ const Page = () => {
           ) : (
             <div className="flex flex-col md:flex-row  gap-8 md:gap-20">
               {/* Cart Items */}
-              <ScrollArea className="h-[40rem] ">
-                <div className="flex flex-col items-center justify-center">
+              <ScrollArea className="h-[40rem] px-3">
+                <div className="flex flex-col items-center justify-center ">
                   {cartItems?.map((item, key: number) => {
                     return (
                       <CartItemCard
@@ -99,21 +99,23 @@ const Page = () => {
               {/* Cart Total */}
               <div className="flex flex-col gap-5">
                 <h1 className="text-4xl font-semibold">Total</h1>
-                <div>
-                  {cartItems?.map((item: configType, key: number) => {
-                    return (
-                      <div className="flex gap-11 w-full justify-between">
-                        <p className="text-wrap text-lg">
-                          {item.title} ({item.variantName})
-                        </p>
-                        <p className="text-lg">
-                          Rs. {item.basePrice + item.additionalCost} x{" "}
-                          {item.itemQuantity}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ScrollArea className="max-h-[40rem]">
+                  <div className="flex flex-col items-center justify-center">
+                    {cartItems?.map((item: configType, key: number) => {
+                      return (
+                        <div className="flex gap-11 w-full justify-between">
+                          <p className="text-wrap text-lg">
+                            {item.title} ({item.variantName})
+                          </p>
+                          <p className="text-lg">
+                            Rs. {item.basePrice + item.additionalCost} x{" "}
+                            {item.itemQuantity}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
                 <div className="flex gap-11 w-full justify-between">
                   <p className="text-lg">Total (Excluding GST)</p>
                   <p className="text-lg">Rs. {total}</p>
