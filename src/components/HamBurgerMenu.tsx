@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, Menu, User } from "lucide-react";
+import { LogIn, LogOut, Menu, ShoppingBasketIcon, User } from "lucide-react";
 import Link from "next/link";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
@@ -75,6 +75,14 @@ const HamBurgerMenu = ({ user }: { user: ClerkUser | null }) => {
                   {" "}
                   Contact Us
                 </Link>
+                <Link
+                  href="/cart"
+                  className="h-14 flex justify-center items-center border-0 border-t-2  gap-3"
+                >
+                  <ShoppingBasketIcon className="w-5 h-5" />
+                  My cart
+                </Link>
+
                 <div className="flex border-t-2 h-14 border items-center justify-between p-3 gap-4">
                   {user ? (
                     <>

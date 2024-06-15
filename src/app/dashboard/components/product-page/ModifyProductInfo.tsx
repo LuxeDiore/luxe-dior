@@ -82,6 +82,7 @@ const ModifyProductInfo = ({
       title: item.title,
       variantsCount: variants.length,
       variants: variants,
+      productSold: item.productSold,
     };
 
     if (

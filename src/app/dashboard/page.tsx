@@ -22,7 +22,7 @@ const Page = () => {
         {/* Orders */}
         {selectedItem === "Orders" && <Orders />}
         {/* Products */}
-        {selectedItem === "Products" && <Products />}
+        {selectedItem === "Perfumes" && <Products />}
       </MaxWidthWrapper>
     </div>
   );

@@ -28,6 +28,7 @@ export interface configType {
   category: string;
   title: string;
   variantId: number;
+  variantName: string;
 }
 const page = ({ params }: { params: { productId: string } }) => {
   const { toast } = useToast();
@@ -59,6 +60,7 @@ const page = ({ params }: { params: { productId: string } }) => {
     productId: "",
     category: "",
     title: "",
+    variantName: "",
     variantId: 0,
   });
 
@@ -83,6 +85,7 @@ const page = ({ params }: { params: { productId: string } }) => {
         productId: product?._id!,
         title: product?.title,
         variantId: selectedVariant,
+        variantName: product?.variants[selectedVariant]?.name,
       };
       const res = await addToCartServerHandler({ details });
 

@@ -6,10 +6,31 @@ export interface cartItem {
   images: string[];
   quantity: number;
   itemQuantity: number;
-  productId: string;
+  productId:
+    | string
+    | {
+        _id: string;
+        stock: number;
+      };
   category: string;
   title: string;
   variantId: number;
+  _id?: string;
+}
+export interface cartItemFilled {
+  basePrice: number;
+  additionalCost: number;
+  images: string[];
+  quantity: number;
+  itemQuantity: number;
+  productId: {
+    _id: string;
+    stock: number;
+  };
+  category: string;
+  title: string;
+  variantId: number;
+  _id?: string;
 }
 export interface User {
   _id: string;

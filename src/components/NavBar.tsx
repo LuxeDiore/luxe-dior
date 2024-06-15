@@ -2,7 +2,7 @@ import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, ShoppingBasketIcon, User } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { categories } from "@/data/data";
@@ -60,6 +60,12 @@ const NavBar = async () => {
                   </>
                 ) : null}
                 <div className="h-8 w-px bg-zinc-200" />
+                <Link
+                  href="/cart"
+                  className="border border-dashed w-10 h-10 flex justify-center items-center rounded-xl hover:bg-orange-500"
+                >
+                  <ShoppingBasketIcon className="w-5 h-5" />
+                </Link>
                 {/* <Link href="/me">
                   <User className=" h-5 w-5" />
                 </Link> */}

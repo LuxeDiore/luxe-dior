@@ -27,7 +27,7 @@ export interface productInfo {
   category: string;
   variantsCount: number;
   variants: variantInfo[];
-  productSold: number;
+  productSold?: number;
   createdAt?: any;
 }
 

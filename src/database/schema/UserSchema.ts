@@ -76,6 +76,9 @@ const userSchema = new mongoose.Schema({
       title: {
         type: String,
       },
+      variantName: {
+        type: String,
+      },
     },
   ],
 });
