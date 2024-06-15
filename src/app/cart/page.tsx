@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react";
 import { getCartItemsServerHandler, updateCartServerHandler } from "./action";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
-import { Loader2, ShoppingBasketIcon } from "lucide-react";
+import {
+  Loader2,
+  Lock,
+  LockIcon,
+  LockKeyhole,
+  ShoppingBasketIcon,
+} from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
@@ -78,10 +84,10 @@ const Page = () => {
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col md:flex-row  gap-8 md:gap-20">
+            <div className="flex cart-main-container">
               {/* Cart Items */}
-              <ScrollArea className="h-[40rem] px-3">
-                <div className="flex flex-col items-center justify-center ">
+              <ScrollArea className="max-h-[40rem] px-3">
+                <div className="flex flex-col items-start justify-center ">
                   {cartItems?.map((item, key: number) => {
                     return (
                       <CartItemCard
@@ -99,15 +105,15 @@ const Page = () => {
               {/* Cart Total */}
               <div className="flex flex-col gap-5">
                 <h1 className="text-4xl font-semibold">Total</h1>
-                <ScrollArea className="max-h-[40rem]">
-                  <div className="flex flex-col items-center justify-center">
+                <ScrollArea className="max-h-[40rem] w-[100%]">
+                  <div className="flex flex-col items-start justify-center w-full">
                     {cartItems?.map((item: configType, key: number) => {
                       return (
-                        <div className="flex gap-11 w-full justify-between">
-                          <p className="text-wrap text-lg">
+                        <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[100%]">
+                          <p className="text-wrap text-sm md:text-lg col-span-7">
                             {item.title} ({item.variantName})
                           </p>
-                          <p className="text-lg">
+                          <p className="text-sm md:text-lg col-span-3 ">
                             Rs. {item.basePrice + item.additionalCost} x{" "}
                             {item.itemQuantity}
                           </p>
@@ -116,9 +122,18 @@ const Page = () => {
                     })}
                   </div>
                 </ScrollArea>
-                <div className="flex gap-11 w-full justify-between">
-                  <p className="text-lg">Total (Excluding GST)</p>
-                  <p className="text-lg">Rs. {total}</p>
+                <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
+                  <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
+                    Total (Excluding GST)
+                  </p>
+                  <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
+                    Rs. {total}
+                  </p>
+                </div>
+                <div className="w-full">
+                  <Button className="w-full bg-green-500 flex gap-2 items-center justify-center text-lg font-semibold">
+                    Pay now <LockKeyhole className="w-5 h-5" />
+                  </Button>
                 </div>
               </div>
             </div>

@@ -102,7 +102,7 @@ const CartItemCard = ({
     setItem(cartItem);
   }, []);
   return (
-    <div className="h-[27rem] md:h-[7rem] flex gap-3 mb-3 border-4 rounded-xl overflow-hidden w-[75vw] md:w-[40rem] flex-col md:flex-row ">
+    <div className="h-[27rem] md:h-[7rem] flex gap-3 mb-3 border-4 rounded-xl overflow-hidden w-[100%] md:w-[40rem] flex-col md:flex-row ">
       <img
         src={item.images[0]}
         alt=""
