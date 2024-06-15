@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
               <div className="flex-1 flex flex-col h-full">{children}</div>
               <Toaster />
             </main>
+            <Footer />
           </ThemeProvider>
         </body>
       </ClerkProvider>

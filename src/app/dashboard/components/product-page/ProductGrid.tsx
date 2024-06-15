@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { productInfo } from "@/types/product";
+import { Loader2 } from "lucide-react";
 
 const ProductGrid = ({
   keyword,
@@ -151,77 +152,86 @@ const ProductGrid = ({
     setPageNo(pageNo - 1);
   };
   return (
-    <ScrollArea className="h-[calc(100vh-13rem)]">
-      <div className="h-full justify-between flex flex-col gap-5">
-        {items?.length == 0 ? (
-          <div className="h-[calc(100vh-19rem)] w-full flex justify-center items-center text-3xl font-semibold text-slate-500 text-center">
-            No products created
+    <>
+      {items ? (
+        <ScrollArea className="h-[calc(100vh-13rem)]">
+          <div className="h-full justify-between flex flex-col gap-5">
+            {items?.length == 0 ? (
+              <div className="h-[calc(100vh-19rem)] w-full flex justify-center items-center text-3xl font-semibold text-slate-500 text-center">
+                No products created
+              </div>
+            ) : (
+              <div className="min-h-[calc(100vh-19rem)] grid product-grid-dashboard gap-y-5 py-4 ">
+                {items
+                  ?.filter((item, key1) => {
+                    let tempKeyword = keyword.trim();
+                    // if (tempKeyword.length === 0) return item;
+                    let itemLowerCase = item.title.toLowerCase();
+                    let keywordLowerCase = tempKeyword.toLowerCase();
+                    let thisPageStartingElement = (pageNo - 1) * 10 + 1;
+                    let thisPageEndingElement = pageNo * 10 + 1;
+
+                    if (
+                      (itemLowerCase === keywordLowerCase ||
+                        itemLowerCase.includes(keywordLowerCase) ||
+                        keywordLowerCase.includes(itemLowerCase)) &&
+                      key1 + 1 >= thisPageStartingElement &&
+                      key1 + 1 < thisPageEndingElement
+                    ) {
+                      return true;
+                    }
+                    return false;
+                  })
+                  ?.map((item, key) => {
+                    return (
+                      <>
+                        <ProductCardDashboard
+                          setItems={setItems}
+                          item={item}
+                          key={key}
+                        />
+                      </>
+                    );
+                  })}
+              </div>
+            )}
+
+            <Pagination>
+              <PaginationContent className="w-[90%]  flex justify-between">
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={prevPage}
+                    className={cn(
+                      buttonVariants({
+                        variant: "secondary",
+                      }),
+                      "cursor-pointer"
+                    )}
+                  />
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={nextPage}
+                    className={cn(
+                      buttonVariants({
+                        variant: "secondary",
+                      }),
+                      "cursor-pointer"
+                    )}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
-        ) : (
-          <div className="min-h-[calc(100vh-19rem)] grid product-grid-dashboard gap-y-5 py-4 ">
-            {items
-              ?.filter((item, key1) => {
-                let tempKeyword = keyword.trim();
-                // if (tempKeyword.length === 0) return item;
-                let itemLowerCase = item.title.toLowerCase();
-                let keywordLowerCase = tempKeyword.toLowerCase();
-                let thisPageStartingElement = (pageNo - 1) * 10 + 1;
-                let thisPageEndingElement = pageNo * 10 + 1;
-
-                if (
-                  (itemLowerCase === keywordLowerCase ||
-                    itemLowerCase.includes(keywordLowerCase) ||
-                    keywordLowerCase.includes(itemLowerCase)) &&
-                  key1 + 1 >= thisPageStartingElement &&
-                  key1 + 1 < thisPageEndingElement
-                ) {
-                  return true;
-                }
-                return false;
-              })
-              ?.map((item, key) => {
-                return (
-                  <>
-                    <ProductCardDashboard
-                      setItems={setItems}
-                      item={item}
-                      key={key}
-                    />
-                  </>
-                );
-              })}
-          </div>
-        )}
-
-        <Pagination>
-          <PaginationContent className="w-[90%]  flex justify-between">
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={prevPage}
-                className={cn(
-                  buttonVariants({
-                    variant: "secondary",
-                  }),
-                  "cursor-pointer"
-                )}
-              />
-            </PaginationItem>
-
-            <PaginationItem>
-              <PaginationNext
-                onClick={nextPage}
-                className={cn(
-                  buttonVariants({
-                    variant: "secondary",
-                  }),
-                  "cursor-pointer"
-                )}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
-    </ScrollArea>
+        </ScrollArea>
+      ) : (
+        <div className="w-full flex justify-center h-full items-center col-span-4 min-h-[20rem] flex-col gap-2">
+          <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
+          <h3 className="font-semibold text-xl">Loading...</h3>
+        </div>
+      )}
+    </>
   );
 };
 
