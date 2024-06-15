@@ -13,7 +13,7 @@ const MobileSideBar = ({
       title: "Orders",
     },
     {
-      title: "Products",
+      title: "Perfumes",
     },
   ];
   return (
