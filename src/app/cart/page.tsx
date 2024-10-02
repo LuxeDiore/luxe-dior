@@ -109,7 +109,10 @@ const Page = () => {
                   <div className="flex flex-col items-start justify-center w-full">
                     {cartItems?.map((item: configType, key: number) => {
                       return (
-                        <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[100%]">
+                        <div
+                          key={key}
+                          className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[100%]"
+                        >
                           <p className="text-wrap text-sm md:text-lg col-span-7">
                             {item.title} ({item.variantName})
                           </p>

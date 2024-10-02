@@ -33,6 +33,7 @@ const Footer = () => {
         {routes?.map((route, key) => {
           return (
             <Link
+              key={key}
               className={cn(
                 buttonVariants({
                   variant: "link",

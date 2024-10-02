@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { getProductsCategoryWiseServerHandler } from "./action";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,7 +18,7 @@ import PerfumeCard from "@/components/PerfumeCard";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
-const page = ({ params }: { params: { categoryName: string } }) => {
+const Page = ({ params }: { params: { categoryName: string } }) => {
   const { toast } = useToast();
   const [keyword, setKeyword] = useState("");
 
@@ -111,7 +110,7 @@ const page = ({ params }: { params: { categoryName: string } }) => {
                     .map((item, key) => {
                       return (
                         <>
-                          <PerfumeCard item={item} />
+                          <PerfumeCard item={item} key={key} />
                         </>
                       );
                     })}
@@ -157,4 +156,4 @@ const page = ({ params }: { params: { categoryName: string } }) => {
   );
 };
 
-export default page;
+export default Page;

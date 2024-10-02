@@ -26,7 +26,7 @@ const OrderTable = ({ orders }: { orders: OrderType[] }) => {
       <TableBody>
         {orders?.map((order, key) => {
           return (
-            <TableRow>
+            <TableRow key={key}>
               <TableCell className="font-medium">{key + 1}</TableCell>
               <TableCell>{order?.orderStatus}</TableCell>
               <TableCell>{order?.paymentMethod}</TableCell>

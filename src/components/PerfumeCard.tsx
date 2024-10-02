@@ -31,7 +31,7 @@ const PerfumeCard = ({ item }: { item: productInfo }) => {
       <Slider {...settings}>
         {images?.map((image, key) => {
           return (
-            <div>
+            <div key={key}>
               <img
                 src={image}
                 key={key}

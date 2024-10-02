@@ -30,7 +30,7 @@ export interface configType {
   variantId: number;
   variantName: string;
 }
-const page = ({ params }: { params: { productId: string } }) => {
+const Page = ({ params }: { params: { productId: string } }) => {
   const { toast } = useToast();
 
   const [product, setProduct] = useState<productInfo | null>({
@@ -125,7 +125,7 @@ const page = ({ params }: { params: { productId: string } }) => {
     getProductDetails();
   }, []);
   return (
-    <MaxWidthWrapper className="py-[4rem] lg:py-[10rem] flex gap-10 product-description-page-container">
+    <MaxWidthWrapper className="py-[4rem] lg:py-[10rem] flex gap-10 product-description-P-container">
       {product?._id === "" ? (
         <div className="w-full flex justify-center h-full items-center col-span-4 min-h-[20rem] flex-col gap-2">
           <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
@@ -198,6 +198,7 @@ const page = ({ params }: { params: { productId: string } }) => {
                 {product?.variants?.map((variant, key) => {
                   return (
                     <div
+                      key={key}
                       className={cn(
                         "w-[80vw] md:w-[30rem] border rounded-xl p-2 flex gap-1 flex-col cursor-pointer",
                         key == selectedVariant && " border-4 border-white"
@@ -258,4 +259,4 @@ const page = ({ params }: { params: { productId: string } }) => {
   );
 };
 
-export default page;
+export default Page;
