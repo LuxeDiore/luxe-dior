@@ -1,3 +1,4 @@
+"use server";
 import ContactUsEmailTemplateAdmin from "../../../email-templates/contact-us-email-template-admin";
 import ContactUsEmailTemplateClient from "../../../email-templates/contact-us-email-template-client";
 import { resend } from "@/lib/resend";

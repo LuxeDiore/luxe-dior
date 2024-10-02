@@ -120,3 +120,17 @@ export async function getSelfOrders({ clerkId }: { clerkId: string }) {
     return { success: false, message: "Something went wrong.", orders: "[]" };
   }
 }
+
+export async function getUser() {
+  try {
+    const user = await currentUser();
+    if (user == null) return { success: true, user: "" };
+    const userString = JSON.stringify(user);
+    return { success: true, user: userString };
+  } catch (err: any) {
+    return {
+      error: err.message,
+      success: false,
+    };
+  }
+}
