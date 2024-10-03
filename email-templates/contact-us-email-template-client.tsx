@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import {
   Body,
   Button,
@@ -13,12 +13,8 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import Logo from "@/components/Logo";
-
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-const ContactUsEmailTemplate = ({
+import { LogoServer as Logo } from "@/components/LogoServer";
+export const ContactUsEmailTemplate = ({
   fname,
   lname,
   query,
@@ -41,9 +37,7 @@ const ContactUsEmailTemplate = ({
 
           <Section style={{ paddingBottom: "20px" }}>
             <Row>
-              <Text style={heading}>
-                Here's what you have submitted a query for .
-              </Text>
+              <Text style={heading}>Hi, We have received your query.</Text>
               <Text style={review}>{query}</Text>
             </Row>
           </Section>
@@ -65,6 +59,11 @@ const ContactUsEmailTemplate = ({
                   <div className="flex gap-2 font-semibold">
                     &copy; 2024, All rights reserved
                   </div>
+                  <br />
+                  <div className="flex gap-2 font-semibold text-gray-600">
+                    <b>Note : </b> This is a system generated email. Please do
+                    not respond to it.
+                  </div>
                 </div>
               </Text>
             </Row>
@@ -75,7 +74,7 @@ const ContactUsEmailTemplate = ({
   );
 };
 
-export default ContactUsEmailTemplate;
+// export default ContactUsEmailTemplate;
 
 const main = {
   backgroundColor: "#ffffff",

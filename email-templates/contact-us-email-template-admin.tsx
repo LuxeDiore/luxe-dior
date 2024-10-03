@@ -13,12 +13,12 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import Logo from "@/components/Logo";
+import { LogoServer as Logo } from "@/components/LogoServer";
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "";
-const ContactUsEmailTemplate = ({
+export const ContactUsEmailTemplate = ({
   fname,
   lname,
   query,
@@ -44,7 +44,7 @@ const ContactUsEmailTemplate = ({
           <Section style={{ paddingBottom: "20px" }}>
             <Row>
               <Text style={heading}>
-                Here is {fname} {lname}'s query
+                You have received a new query from {fname} {lname}
               </Text>
               <Text style={review}>{query}</Text>
 
@@ -64,7 +64,7 @@ const ContactUsEmailTemplate = ({
   );
 };
 
-export default ContactUsEmailTemplate;
+// export default ContactUsEmailTemplate;
 
 const main = {
   backgroundColor: "#ffffff",
