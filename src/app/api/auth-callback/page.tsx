@@ -10,10 +10,10 @@ const Page = () => {
 
   const getStatus = async () => {
     try {
-      setTimeout(async () => {
-        let res = await getAuthStatus();
-        setResponse(res);
-      }, 2000);
+      // setTimeout(async () => {
+      let res = await getAuthStatus();
+      setResponse(res);
+      // }, 2000);
     } catch (err) {
       console.error(err);
     }
