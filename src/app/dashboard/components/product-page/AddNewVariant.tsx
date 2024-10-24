@@ -38,17 +38,10 @@ const AddNewVariant = ({
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: ([data]) => {
-      // console.log("Before Uploading : ");
-      // console.log("New variant : ", newVariant);
       const imageUrl = data.url;
       let newImages = newVariant.images;
       newImages.push(imageUrl);
       setNewVariant({ ...newVariant, images: newImages });
-      // console.log("After Uploading : ");
-      // console.log("New variant : ", newVariant);
-      // console.log("..............................");
-
-      // setFileData([]);
     },
   });
 

@@ -22,7 +22,7 @@ const Page = () => {
   const getUserAndSetDetails = async () => {
     const response = await getUser();
     const success = response.success;
-    if (success) {
+    if (success && response.user! != "") {
       const user = JSON.parse(response.user!);
       if (response.user != "") {
         setDetails({

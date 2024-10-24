@@ -38,16 +38,18 @@ const Page = () => {
     const res = await getCartItemsServerHandler();
 
     const cartItemsString = res.cartItemsString;
-    const cartItemsRes: configType[] = JSON.parse(cartItemsString);
-    setCartItems(cartItemsRes);
+    if (cartItemsString != "") {
+      const cartItemsRes: configType[] = JSON.parse(cartItemsString);
+      setCartItems(cartItemsRes);
 
-    let sum = 0;
-    for (let ele of cartItemsRes) {
-      let temp = ele.additionalCost + ele.basePrice;
-      temp *= ele.itemQuantity;
-      sum += temp;
+      let sum = 0;
+      for (let ele of cartItemsRes) {
+        let temp = ele.additionalCost + ele.basePrice;
+        temp *= ele.itemQuantity;
+        sum += temp;
+      }
+      setTotal(sum);
     }
-    setTotal(sum);
   };
 
   useEffect(() => {

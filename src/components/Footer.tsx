@@ -17,6 +17,10 @@ const routes = [
     title: "Terms and Condition",
     href: "/terms-and-condition",
   },
+  {
+    title: "Returns & Refunds",
+    href: "/returns-and-refunds",
+  },
 ];
 const Footer = () => {
   return (
@@ -24,8 +28,11 @@ const Footer = () => {
       <div className="flex flex-col gap-2 items-center">
         <div>
           <Logo />
+          <div className="text-xs text-gray-400 flex gap-2 font-light">
+            By Jashan Jaura
+          </div>
         </div>
-        <div className="flex gap-2 font-semibold">
+        <div className="text-sm text-gray-300 flex gap-2 font-normal">
           &copy; 2024, All rights reserved
         </div>
       </div>

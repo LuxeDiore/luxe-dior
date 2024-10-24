@@ -108,7 +108,7 @@ const CartItemCard = ({
         alt=""
         className=" object-fill md:h-[7rem] h-[15rem] w-[100%] md:!min-w-[8rem] md:max-w-[8rem]"
       />
-      <div className="flex gap-1 flex-col w-[100%] justify-center items-center md:items-start md:w-[50%]">
+      <div className="flex gap-1 flex-col w-[100%] justify-center items-center md:items-start md:w-[70%]">
         <p className="text-xl font-semibold">{item?.title}</p>
         <p className="text-sm text-gray-500 font-semibold">
           Rs. {item.basePrice + item.additionalCost} x {item.itemQuantity}
