@@ -34,6 +34,15 @@ export interface configType {
 const Page = () => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<configType[] | null>(null);
+  const getTotal = (cartItemsRes: configType[]) => {
+    let sum = 0;
+    for (let ele of cartItemsRes) {
+      let temp = ele.additionalCost + ele.basePrice;
+      temp *= ele.itemQuantity;
+      sum += temp;
+    }
+    setTotal(sum);
+  };
   const getCartItems = async () => {
     const res = await getCartItemsServerHandler();
 
@@ -41,14 +50,7 @@ const Page = () => {
     if (cartItemsString != "") {
       const cartItemsRes: configType[] = JSON.parse(cartItemsString);
       setCartItems(cartItemsRes);
-
-      let sum = 0;
-      for (let ele of cartItemsRes) {
-        let temp = ele.additionalCost + ele.basePrice;
-        temp *= ele.itemQuantity;
-        sum += temp;
-      }
-      setTotal(sum);
+      getTotal(cartItemsRes);
     }
   };
 
@@ -99,6 +101,7 @@ const Page = () => {
                         cartItem={item}
                         cartItems={cartItems}
                         setCartItems={setCartItems}
+                        getTotal={getTotal}
                       />
                     );
                   })}

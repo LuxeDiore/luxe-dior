@@ -21,10 +21,18 @@ const routes = [
     title: "Returns & Refunds",
     href: "/returns-and-refunds",
   },
+  {
+    title: "Terms & Conditions",
+    href: "/terms-and-conditions",
+  },
+  {
+    title: "Privacy Policy",
+    href: "/privacy-policy",
+  },
 ];
 const Footer = () => {
   return (
-    <div className=" flex flex-col sm:flex-row w-full justify-between px-4 items-center py-2  border-t border-gray-200   transition-all gap-5">
+    <div className=" flex flex-col md:flex-row w-full justify-between px-4 items-center py-2  border-t border-gray-200  transition-all gap-5">
       <div className="flex flex-col gap-2 items-center">
         <div>
           <Logo />
@@ -32,11 +40,11 @@ const Footer = () => {
             By Jashan Jaura
           </div>
         </div>
-        <div className="text-sm text-gray-300 flex gap-2 font-normal">
+        <div className="text-sm text-gray-300 text-center items-center justify-center flex gap-2 font-normal">
           &copy; 2024, All rights reserved
         </div>
       </div>
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-col flex-wrap items-center justify-center  sm:flex-row">
         {routes?.map((route, key) => {
           return (
             <Link
