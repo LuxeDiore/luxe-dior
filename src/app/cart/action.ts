@@ -4,6 +4,7 @@ import { currentUser, User as ClerkUser } from "@clerk/nextjs/server";
 import { configType } from "./page";
 import { User as UserType, cartItem, cartItemFilled } from "@/types/user";
 import dbConnect from "@/lib/db";
+import Product from "@/database/schema/ProductSchema"; // Check this path
 
 export async function getCartItemsServerHandler() {
   try {

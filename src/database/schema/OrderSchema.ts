@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   orderValue: {
@@ -29,6 +30,7 @@ const orderSchema = new mongoose.Schema({
     {
       productId: {
         type: mongoose.Types.ObjectId,
+        ref: "Product",
       },
       variant: {
         name: String,

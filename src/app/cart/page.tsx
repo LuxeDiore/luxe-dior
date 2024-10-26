@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { getCartItemsServerHandler, updateCartServerHandler } from "./action";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
+import Product from "@/database/schema/ProductSchema"; // Check this path
+
 import {
   Loader2,
   Lock,
