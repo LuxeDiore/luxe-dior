@@ -51,8 +51,8 @@ export async function getCartItemsServerHandler() {
     console.log("error : ", err.message);
     return {
       success: false,
-      statusCode: err.statusCode,
-      message: err.message,
+      statusCode: 500,
+      message: "Something went wrong",
       cartItemsString: "",
     };
   }
