@@ -15,7 +15,7 @@ const Page = () => {
           <p className="flex justify-center items-center text-left">
             We hope you’re pleased with your purchase from us, but if you do
             need to return anything, you’ve got 7 days to. Refund would be
-            processed in 2-5 working days only on approved returns
+            processed in 2-5 working days only on approved returns.
           </p>
           <p className="flex justify-center items-center text-left">
             We cannot return a product if it has been personalised in anyway. If
@@ -28,7 +28,7 @@ const Page = () => {
             <Link href="/contact-us" className="underline">
               Contact Us
             </Link>{" "}
-            page
+            page.
           </p>
         </div>
       </div>
@@ -50,7 +50,7 @@ const Page = () => {
             <Link href="/contact-us" className="underline">
               Contact Us
             </Link>{" "}
-            page
+            page.
           </p>
         </div>
       </div>

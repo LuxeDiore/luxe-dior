@@ -10,14 +10,6 @@ const routes = [
     href: "/contact-us",
   },
   {
-    title: "Privacy Policy",
-    href: "/privacy-policy",
-  },
-  {
-    title: "Terms and Condition",
-    href: "/terms-and-condition",
-  },
-  {
     title: "Returns & Refunds",
     href: "/returns-and-refunds",
   },

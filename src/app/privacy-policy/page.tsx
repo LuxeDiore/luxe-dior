@@ -30,18 +30,17 @@ const page = () => {
 
         <div className="text-lg flex flex-col gap-4 sm:w-[80%] md:w-[50%]  self-center text-gray-300">
           <div className="flex justify-center items-center text-left">
-            <ul>
+            <ul className="flex flex-col gap-2">
               <li>
-                <b>Identification Information:</b>
-                This includes details such as your name and address, which we
-                collect when you place an order on our website and we use it to
-                deliver your order to you.
+                <b className="underline">Identification Information:</b> This
+                includes details such as your name and address, which we collect
+                when you place an order on our website and we use it to deliver
+                your order to you.
               </li>
               <li>
-                <b>Contact Information:</b>
-                This includes your email address, which we collect when you
-                register or make a purchase on our site and we use it to contact
-                you if necessary.
+                <b className="underline">Contact Information:</b> This includes
+                your email address, which we collect when you register or make a
+                purchase on our site and we use it to contact you if necessary.
               </li>
             </ul>
           </div>
