@@ -3,8 +3,8 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
   return (
-    <MaxWidthWrapper>
-      <div className="w-full flex justify-center items-center h-[calc(100vh-3.5rem)]  pt-40 sm:pt-0">
+    <MaxWidthWrapper className="h-full">
+      <div className="w-full flex justify-center items-center h-[calc(max(100vh-3.5rem,100%))] pt-20 pb-20 ">
         <SignUp
           signInUrl="/sign-in"
           signInForceRedirectUrl="/api/auth-callback"
