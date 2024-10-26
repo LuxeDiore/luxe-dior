@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getCartItemsServerHandler, updateCartServerHandler } from "./action";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
+import { useToast } from "@/components/ui/use-toast";
 import Product from "@/database/schema/ProductSchema"; // Check this path
 
 import {
@@ -16,6 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 export interface configType {
   basePrice: number;
   variantName: string;
@@ -36,6 +38,9 @@ export interface configType {
 const Page = () => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<configType[] | null>(null);
+  const { toast } = useToast();
+  const router = useRouter();
+
   let deliveryCharge = 100;
   const getTotal = (cartItemsRes: configType[]) => {
     let sum = 0;
@@ -49,7 +54,13 @@ const Page = () => {
   };
   const getCartItems = async () => {
     const res = await getCartItemsServerHandler();
-
+    if (res.success == false) {
+      toast({
+        title: res.message,
+        variant: "destructive",
+      });
+      router.push("/");
+    }
     const cartItemsString = res.cartItemsString;
     if (cartItemsString != "") {
       const cartItemsRes: configType[] = JSON.parse(cartItemsString);
