@@ -125,7 +125,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
     getProductDetails();
   }, []);
   return (
-    <MaxWidthWrapper className="py-[4rem] lg:py-[10rem] flex gap-10 product-description-P-container">
+    <MaxWidthWrapper className="py-[4rem] lg:py-[10rem] flex gap-10 product-description-page-container">
       {product?._id === "" ? (
         <div className="w-full flex justify-center h-full items-center col-span-4 min-h-[20rem] flex-col gap-2">
           <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
