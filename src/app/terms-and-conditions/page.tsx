@@ -85,8 +85,8 @@ const page = () => {
             <ul className="flex flex-col gap-2">
               <li>
                 Luxe Dior displays product prices in Indian Rupees (INR),
-                inclusive of GST but exclusive of delivery fees, which are shown
-                at checkout before finalizing the order.
+                exclusive of GST and of delivery fees, which are shown at
+                checkout before finalizing the order.
               </li>
               <li>
                 The total price (excluding and including delivery fees) is

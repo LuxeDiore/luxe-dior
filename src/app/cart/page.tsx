@@ -34,6 +34,7 @@ export interface configType {
 const Page = () => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<configType[] | null>(null);
+  let deliveryCharge = 100;
   const getTotal = (cartItemsRes: configType[]) => {
     let sum = 0;
     for (let ele of cartItemsRes) {
@@ -41,6 +42,7 @@ const Page = () => {
       temp *= ele.itemQuantity;
       sum += temp;
     }
+    sum += deliveryCharge;
     setTotal(sum);
   };
   const getCartItems = async () => {
@@ -130,6 +132,14 @@ const Page = () => {
                     })}
                   </div>
                 </ScrollArea>
+                <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
+                  <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
+                    Delivery Charge
+                  </p>
+                  <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
+                    Rs. {deliveryCharge}
+                  </p>
+                </div>
                 <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
                   <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
                     Total (Excluding GST)
