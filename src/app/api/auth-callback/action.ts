@@ -12,6 +12,7 @@ export async function getAuthStatus() {
           //const email = user!.emailAddresses[0]?.emailAddress!;
           //console.log("email : ", email);
           //!user.emailAddresses[0].emailAddress!
+          // console.log("user : ", user);
           if (!user?.id) {
             throw new Error("Invalid user data");
           }
@@ -19,7 +20,7 @@ export async function getAuthStatus() {
             clerkId: user?.id,
           })
             .then(async (existingUser) => {
-              // console.log("existingUser : ", existingUser);
+              console.log("existingUser : ", existingUser);
               if (!existingUser) {
                 await User.create({
                   clerkId: user?.id,

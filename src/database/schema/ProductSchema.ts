@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema({
   ratings: [
     {
       value: { type: Number },
-      user: { type: mongoose.Schema.Types.ObjectId },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
   ],
   averageRating: {
@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
   reviews: [
     {
       review: { type: String },
-      user: { type: mongoose.Schema.Types.ObjectId },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "uSER" },
     },
   ],
   category: {
@@ -65,6 +65,7 @@ const productSchema = new mongoose.Schema({
     },
   ],
 });
+const Product =
+  mongoose.models.Product || mongoose.model("Product", productSchema);
 
-export default mongoose.models.Product ||
-  mongoose.model("Product", productSchema);
+export default Product;

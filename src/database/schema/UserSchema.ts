@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema({
   orders: [
     {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
     },
   ],
   cartItems: [
@@ -70,6 +71,7 @@ const userSchema = new mongoose.Schema({
       },
       productId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
       },
       category: {
         type: String,

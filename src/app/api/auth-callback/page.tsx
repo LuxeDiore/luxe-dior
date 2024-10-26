@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getAuthStatus } from "./action";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { ClerkLoading } from "@clerk/nextjs";
 
 const Page = () => {
   const router = useRouter();
@@ -10,10 +11,10 @@ const Page = () => {
 
   const getStatus = async () => {
     try {
-      // setTimeout(async () => {
-      let res = await getAuthStatus();
-      setResponse(res);
-      // }, 2000);
+      setTimeout(async () => {
+        let res = await getAuthStatus();
+        setResponse(res);
+      }, 2000);
     } catch (err) {
       console.error(err);
     }
