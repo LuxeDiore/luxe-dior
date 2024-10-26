@@ -1,5 +1,4 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
@@ -7,13 +6,16 @@ const Page = () => {
   return (
     <MaxWidthWrapper>
       <div className="flex flex-col gap-4 pt-14  ">
-        <h1 className="text-3xl uppercase w-full flex justify-center items-center font-extrabold">
-          Return & Refunds Policy
-        </h1>
-        <div className="text-lg flex flex-col gap-4 w-[50%] self-center text-gray-300">
+        <div className="text-lg flex flex-col gap-4 sm:w-[80%] md:w-[50%] self-center ">
+          <h1 className="flex  text-3xl text-center uppercase justify-center items-center font-extrabold">
+            Return & Refunds Policy
+          </h1>
+        </div>
+        <div className="text-lg flex flex-col gap-4 sm:w-[80%] md:w-[50%] self-center text-gray-300">
           <p className="flex justify-center items-center text-left">
             We hope you’re pleased with your purchase from us, but if you do
-            need to return anything, you’ve got 7 days to.
+            need to return anything, you’ve got 7 days to. Refund would be
+            processed in 2-5 working days only on approved returns.
           </p>
           <p className="flex justify-center items-center text-left">
             We cannot return a product if it has been personalised in anyway. If
@@ -22,32 +24,33 @@ const Page = () => {
             or exchange on the item.
           </p>
           <p>
-            To return the package send us an email from here :{" "}
-            <Link href="/contact-us">
-              <Button variant={"link"} className="underline">
-                Contact Us
-              </Button>
-            </Link>
+            To return the package send us an email from our{" "}
+            <Link href="/contact-us" className="underline">
+              Contact Us
+            </Link>{" "}
+            page.
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-4 pt-14  ">
-        <h1 className="text-3xl uppercase w-full flex justify-center items-center font-extrabold">
-          Shipping Policy
-        </h1>
-        <div className="text-lg flex flex-col gap-4 w-[50%] self-center text-gray-300">
+      <div className="flex flex-col gap-4 pt-14 pb-14 ">
+        <div className="text-lg flex flex-col gap-4 sm:w-[80%] md:w-[50%] self-center ">
+          <h1 className="flex  text-3xl text-center uppercase justify-center items-center font-extrabold">
+            Shipping Policy
+          </h1>
+        </div>
+
+        <div className="text-lg flex flex-col gap-4 sm:w-[80%] md:w-[50%]  self-center text-gray-300">
           <p>
             After placing the order, the product is delivered to you after you
-            in the next 7-10 working days.
+            in the next 7-10 days.
           </p>
 
           <p>
-            In case of any query, you can reach out to us in our{" "}
-            <Link href="/contact-us">
-              <Button variant={"link"} className="underline">
-                Contact Page
-              </Button>
-            </Link>
+            In case of any query, you can reach out to us through our{" "}
+            <Link href="/contact-us" className="underline">
+              Contact Us
+            </Link>{" "}
+            page.
           </p>
         </div>
       </div>

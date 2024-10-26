@@ -13,12 +13,14 @@ const CartItemCard = ({
   index,
   setCartItems,
   cartItems,
+  getTotal,
 }: {
   cartItem: configType;
   getCartItems: () => Promise<void>;
   index: number;
   setCartItems: React.Dispatch<React.SetStateAction<configType[] | null>>;
   cartItems: configType[];
+  getTotal: (a: configType[]) => void;
 }) => {
   const [item, setItem] = useState<configType>({
     additionalCost: 0,
@@ -36,6 +38,7 @@ const CartItemCard = ({
     variantName: "",
   });
   const { toast } = useToast();
+  const [updateState, setUpdateState] = useState(true);
 
   const updateCartHandler = async ({
     type,
@@ -53,15 +56,26 @@ const CartItemCard = ({
             title: "Item removed from cart.",
             variant: "default",
           });
+          let newCartItems: configType[] = new Array<configType>();
+          cartItems
+            .filter((cItem) => {
+              let check =
+                cItem.productId._id != item.productId._id ||
+                cItem.variantId != item.variantId;
+              return check ?? cItem;
+            })
+            .forEach((cItem) => {
+              newCartItems.push(cItem);
+            });
+          setCartItems(newCartItems);
+          getTotal(newCartItems);
+          setUpdateState(!updateState);
           await updateCartServerHandler({
             type: "delete",
             newItemQuantity: 0,
             productId: item?.productId?._id,
             variantId: item?.variantId,
-          }).then(async () => {
-            await getCartItems();
           });
-
           return;
         }
       } else {
@@ -76,6 +90,8 @@ const CartItemCard = ({
       let newCartItems: configType[] = cartItems;
       newCartItems[index].itemQuantity = newItemQuantity;
       setCartItems(newCartItems);
+      getTotal(newCartItems);
+
       await updateCartServerHandler({
         newItemQuantity: newItemQuantity,
         productId: item?.productId?._id,
@@ -83,6 +99,20 @@ const CartItemCard = ({
         variantId: item?.variantId,
       });
     } else {
+      let newCartItems: configType[] = new Array<configType>();
+      cartItems
+        .filter((cItem) => {
+          let check =
+            cItem.productId._id != item.productId._id ||
+            cItem.variantId != item.variantId;
+          return check ?? cItem;
+        })
+        .forEach((cItem) => {
+          newCartItems.push(cItem);
+        });
+      setCartItems(newCartItems);
+      getTotal(newCartItems);
+      setUpdateState(!updateState);
       await updateCartServerHandler({
         type: "delete",
         newItemQuantity: 0,
@@ -94,13 +124,13 @@ const CartItemCard = ({
         variant: "default",
       });
     }
-    await getCartItems();
+    // await getCartItems();
 
     // window.location.reload();
   };
   useEffect(() => {
     setItem(cartItem);
-  }, []);
+  }, [updateState]);
   return (
     <div className="h-[27rem] md:h-[7rem] flex gap-3 mb-3 border-4 rounded-xl overflow-hidden w-[100%] md:w-[40rem] flex-col md:flex-row ">
       <img

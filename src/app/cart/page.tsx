@@ -34,6 +34,17 @@ export interface configType {
 const Page = () => {
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState<configType[] | null>(null);
+  let deliveryCharge = 100;
+  const getTotal = (cartItemsRes: configType[]) => {
+    let sum = 0;
+    for (let ele of cartItemsRes) {
+      let temp = ele.additionalCost + ele.basePrice;
+      temp *= ele.itemQuantity;
+      sum += temp;
+    }
+    sum += deliveryCharge;
+    setTotal(sum);
+  };
   const getCartItems = async () => {
     const res = await getCartItemsServerHandler();
 
@@ -41,14 +52,7 @@ const Page = () => {
     if (cartItemsString != "") {
       const cartItemsRes: configType[] = JSON.parse(cartItemsString);
       setCartItems(cartItemsRes);
-
-      let sum = 0;
-      for (let ele of cartItemsRes) {
-        let temp = ele.additionalCost + ele.basePrice;
-        temp *= ele.itemQuantity;
-        sum += temp;
-      }
-      setTotal(sum);
+      getTotal(cartItemsRes);
     }
   };
 
@@ -99,6 +103,7 @@ const Page = () => {
                         cartItem={item}
                         cartItems={cartItems}
                         setCartItems={setCartItems}
+                        getTotal={getTotal}
                       />
                     );
                   })}
@@ -127,6 +132,14 @@ const Page = () => {
                     })}
                   </div>
                 </ScrollArea>
+                <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
+                  <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
+                    Delivery Charge
+                  </p>
+                  <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
+                    Rs. {deliveryCharge}
+                  </p>
+                </div>
                 <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
                   <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
                     Total (Excluding GST)
