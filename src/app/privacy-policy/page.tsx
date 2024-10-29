@@ -58,7 +58,7 @@ const page = () => {
           <ul className="flex flex-col gap-5">
             {policies.map((item, key) => {
               return (
-                <li className="flex flex-col gap-3">
+                <li className="flex flex-col gap-3" key={key}>
                   <h1 className="text-xl font-bold">
                     {key + 1}. {item.title}
                   </h1>
