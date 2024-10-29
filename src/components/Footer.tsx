@@ -29,7 +29,7 @@ const Footer = () => {
         <div>
           <Logo />
           <div className="text-xs text-gray-400 flex gap-2 font-light">
-            By Jashan Jaura
+            By Jashan Verma
           </div>
         </div>
         <div className="text-sm text-gray-300 text-center items-center justify-center flex gap-2 font-normal">
