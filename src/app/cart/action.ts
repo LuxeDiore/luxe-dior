@@ -148,11 +148,11 @@ export async function updateCartServerHandler({
 
 export async function redirectPayment(price: number) {
   try {
-    const MERCHANT_ID = process.env.NEXT_PUBLIC_PHONE_PAY_MERCHANT_ID;
-    const PHONE_PE_HOST_URL = process.env.NEXT_PUBLIC_PHONE_PAY_LINK;
-    const SALT_INDEX = process.env.NEXT_PUBLIC_PHONE_PAY_SALT_INDEX;
-    const SALT_KEY = process.env.NEXT_PUBLIC_PHONE_PAY_SALT_KEY;
-    const APP_BE_URL = process.env.NEXT_PUBLIC_PHONE_PAY_APP_BE_URL; // our application
+    const MERCHANT_ID = process.env.PHONE_PAY_MERCHANT_ID;
+    const PHONE_PE_HOST_URL = process.env.PHONE_PAY_LINK;
+    const SALT_INDEX = process.env.PHONE_PAY_SALT_INDEX;
+    const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
+    const APP_BE_URL = process.env.PHONE_PAY_APP_BE_URL; // our application
     price = 1;
     const user = await currentUser();
     if (user == null) {
