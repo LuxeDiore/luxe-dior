@@ -5,6 +5,11 @@ import { configType } from "./page";
 import { User as UserType, cartItem, cartItemFilled } from "@/types/user";
 import dbConnect from "@/lib/db";
 import Product from "@/database/schema/ProductSchema"; // Check this path
+import axios from "axios";
+import { getUser } from "@/components/actions/action";
+import shajs from "sha.js";
+import Error from "next/error";
+import { redirect } from "next/navigation";
 
 export async function getCartItemsServerHandler() {
   try {
@@ -137,6 +142,78 @@ export async function updateCartServerHandler({
     return {
       success: false,
       message: "Something went wrong",
+    };
+  }
+}
+
+export async function redirectPayment(price: number) {
+  try {
+    const MERCHANT_ID = process.env.NEXT_PUBLIC_PHONE_PAY_MERCHANT_ID;
+    const PHONE_PE_HOST_URL = process.env.NEXT_PUBLIC_PHONE_PAY_LINK;
+    const SALT_INDEX = process.env.NEXT_PUBLIC_PHONE_PAY_SALT_INDEX;
+    const SALT_KEY = process.env.NEXT_PUBLIC_PHONE_PAY_SALT_KEY;
+    const APP_BE_URL = process.env.NEXT_PUBLIC_PHONE_PAY_APP_BE_URL; // our application
+    price = 1;
+    const user = await currentUser();
+    if (user == null) {
+      return {
+        success: false,
+        message: "Please login to access this page;",
+        redirectUrl: "",
+      };
+    }
+    let userId = user.id!;
+    // let userId = "MUID123";
+    const merchantTransactionId = "M" + Date.now();
+    let normalPayLoad = {
+      merchantId: MERCHANT_ID, //* PHONEPE_MERCHANT_ID . Unique for each account (private)
+      merchantTransactionId: merchantTransactionId,
+      merchantUserId: userId,
+      amount: price * 100, // converting to paise
+      redirectUrl: `${APP_BE_URL}`,
+      callbackUrl: `${APP_BE_URL}`,
+      redirectMode: "REDIRECT",
+      paymentInstrument: {
+        type: "PAY_PAGE",
+      },
+    };
+    // make base64 encoded payload
+    let bufferObj = Buffer.from(JSON.stringify(normalPayLoad), "utf8");
+    let base64EncodedPayload = bufferObj.toString("base64");
+
+    // X-VERIFY => SHA256(base64EncodedPayload + "/pg/v1/pay" + SALT_KEY) + ### + SALT_INDEX
+    let string = base64EncodedPayload + "/pg/v1/pay" + SALT_KEY;
+    const sha256_val = shajs("sha256").update(string).digest("hex");
+    //const sha256_val = crypto.createHash("sha256").update(string).digest("hex");
+    let xVerifyChecksum = sha256_val + "###" + SALT_INDEX;
+    // return;
+
+    const data = {
+      request: base64EncodedPayload,
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "X-VERIFY": xVerifyChecksum,
+        accept: "application/json",
+      },
+    };
+    const { data: serverData } = await axios.post(
+      PHONE_PE_HOST_URL!,
+      data,
+      config
+    );
+    const { instrumentResponse } = serverData.data;
+    return {
+      redirectUrl: instrumentResponse.redirectInfo.url,
+      message: "Initializing payment...",
+      success: true,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+      redirectUrl: "",
     };
   }
 }

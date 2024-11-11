@@ -123,7 +123,7 @@ export async function getSelfOrders({ clerkId }: { clerkId: string }) {
 
 export async function getUser() {
   try {
-    const user = await currentUser();
+    // const user = await currentUser();
     if (user == null) return { success: true, user: "" };
     const userString = JSON.stringify(user);
     return { success: true, user: userString };
