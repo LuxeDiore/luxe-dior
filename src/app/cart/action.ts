@@ -1,15 +1,12 @@
 "use server";
 import User from "@/database/schema/UserSchema";
 import { currentUser, User as ClerkUser } from "@clerk/nextjs/server";
-import { configType } from "./page";
 import { User as UserType, cartItem, cartItemFilled } from "@/types/user";
 import dbConnect from "@/lib/db";
 import Product from "@/database/schema/ProductSchema"; // Check this path
 import axios from "axios";
 import { getUser } from "@/components/actions/action";
 import shajs from "sha.js";
-import Error from "next/error";
-import { redirect } from "next/navigation";
 
 export async function getCartItemsServerHandler() {
   try {
@@ -154,7 +151,7 @@ export async function redirectPayment(price: number) {
     const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
     const APP_BE_URL = process.env.PHONE_PAY_APP_BE_URL; // our application
     price = 1;
-    const user = await currentUser();
+    let user: ClerkUser | null = await currentUser();
     if (user == null) {
       return {
         success: false,
