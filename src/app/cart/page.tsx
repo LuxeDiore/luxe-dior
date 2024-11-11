@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getCartItemsServerHandler, updateCartServerHandler } from "./action";
+import {
+  getCartItemsServerHandler,
+  redirectPayment,
+  updateCartServerHandler,
+} from "./action";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
 import { useToast } from "@/components/ui/use-toast";
@@ -51,6 +55,23 @@ const Page = () => {
     }
     sum += deliveryCharge;
     setTotal(sum);
+  };
+
+  const paymentHandler = async () => {
+    console.log("Initializing payment handler");
+    const res = await redirectPayment(total);
+    if (res!.success) {
+      toast({
+        title: res!.message,
+        variant: "default",
+      });
+      router.push(res!.redirectUrl);
+    } else {
+      toast({
+        title: res!.message,
+        variant: "destructive",
+      });
+    }
   };
   const getCartItems = async () => {
     const res = await getCartItemsServerHandler();
@@ -162,7 +183,10 @@ const Page = () => {
                   </p>
                 </div>
                 <div className="w-full">
-                  <Button className="w-full bg-green-500 flex gap-2 items-center justify-center text-lg font-semibold">
+                  <Button
+                    onClick={paymentHandler}
+                    className="w-full bg-green-500 flex gap-2 items-center justify-center text-lg font-semibold"
+                  >
                     Pay now <LockKeyhole className="w-5 h-5" />
                   </Button>
                 </div>
