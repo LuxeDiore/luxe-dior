@@ -150,7 +150,7 @@ export async function redirectPayment(price: number) {
     const SALT_INDEX = process.env.PHONE_PAY_SALT_INDEX;
     const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
     const APP_BE_URL = process.env.PHONE_PAY_APP_BE_URL; // our application
-    price = 101;
+    price = 1;
     let user: ClerkUser | null = await currentUser();
     if (user == null) {
       return {
