@@ -134,3 +134,19 @@ export async function getUser() {
     };
   }
 }
+export async function getUserName() {
+  try {
+    const user = await currentUser();
+    if (user == null) return { success: false, name: "", clerkId: "" };
+    return {
+      success: true,
+      clerkId: JSON.stringify(user.id),
+      name: user.fullName,
+    };
+  } catch (err: any) {
+    return {
+      error: err.message,
+      success: false,
+    };
+  }
+}

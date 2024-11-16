@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
+  createOrder,
   getCartItemsServerHandler,
   redirectPayment,
   updateCartServerHandler,
@@ -8,7 +9,7 @@ import {
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
 import { useToast } from "@/components/ui/use-toast";
-import Product from "@/database/schema/ProductSchema"; // Check this path
+import Product from "@/database/schema/ProductSchema";
 
 import {
   Loader2,
@@ -22,6 +23,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { getUserName } from "@/components/actions/action";
+import { OrderItemconfigType } from "@/types/order";
 export interface configType {
   basePrice: number;
   variantName: string;
@@ -58,14 +61,55 @@ const Page = () => {
   };
 
   const paymentHandler = async () => {
-    console.log("Initializing payment handler");
+    const user = await getUserName();
+    if (user.success == false) {
+      toast({
+        variant: "destructive",
+        title: "Please login to access this page",
+      });
+      router.push("/");
+      return;
+    }
+    const userName = user.name;
+    const clerkId = JSON.parse(user.clerkId!);
     const res = await redirectPayment(total);
+    let items: OrderItemconfigType[] = [];
+    for (let i = 0; i < cartItems!.length; i++) {
+      let orderItem: OrderItemconfigType = {
+        basePrice: cartItems![i].basePrice,
+        productId: cartItems![i].productId._id,
+        quantity: cartItems![i].itemQuantity,
+        variantId: cartItems![i].variantId,
+      };
+      items.push(orderItem);
+    }
     if (res!.success) {
+      // create a  transaction
+      const order = {
+        user: { clerkId: clerkId, userName: userName },
+        deliveryCharge: deliveryCharge,
+        orderValue: total - deliveryCharge,
+        orderStatus: "PAYMENT PENDING",
+        paymentStatus: res.code,
+        paymentId: res.merchantTransactionId,
+        items: items,
+      };
+      localStorage.setItem("paymentId", res.merchantTransactionId as string);
+      const { success } = await createOrder(order);
       toast({
         title: res!.message,
         variant: "default",
       });
-      router.push(res!.redirectUrl);
+      if (success == true) {
+        setTimeout(() => {
+          router.push(res!.redirectUrl);
+        }, 1500);
+      } else {
+        toast({
+          title: "Failed to initiate transaction. Please try again",
+          variant: "destructive",
+        });
+      }
     } else {
       toast({
         title: res!.message,
@@ -176,7 +220,7 @@ const Page = () => {
                 </div>
                 <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
                   <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
-                    Total (Excluding GST)
+                    Total
                   </p>
                   <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
                     Rs. {total}

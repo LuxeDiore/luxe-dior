@@ -46,8 +46,6 @@ const AddNewVariant = ({
   });
 
   const fileUploader = async () => {
-    // console.log("Before File Uploader : ");
-    // console.log("File data : ", fileData);
     let files = [];
 
     for (let ele of fileData) {
@@ -65,7 +63,6 @@ const AddNewVariant = ({
   };
 
   const fileHandler = async (Files: FileList) => {
-    // console.log("Before File Handler : ", fileData);
     for (let i = 0; i < Files.length; i++) {
       let file = Files[i];
       let type = file.type.split("/")[i];
@@ -77,15 +74,8 @@ const AddNewVariant = ({
       };
       setFileData((fileData) => [...fileData, image]);
     }
-    // console.log("After File Handler : ", fileData);
-
-    // console.log("..............................");
   };
   async function submitHandler() {
-    // console.log("Before Submit Handler :");
-    // console.log("item : ", item);
-    // console.log("new-variant before : ", newVariant);
-    // console.log("file-data before : ", fileData);
     let name = newVariant.name.trim();
     if (name.length == 0) {
       toast({
@@ -129,13 +119,6 @@ const AddNewVariant = ({
       toast({
         title: "Variant added successfully.",
       });
-
-      // console.log("After Submit Handler : ");
-      // console.log("item : ", item);
-      // console.log("new-variant after : ", newVariant);
-      // console.log("file-data after : ", fileData);
-
-      // console.log("..............................");
     });
   }
 

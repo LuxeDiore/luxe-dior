@@ -1,5 +1,8 @@
 export enum orderStatus {
-  "Initialized",
-  "Out for delivery",
-  "Shipped",
+  "PAYMENT PENDING",
+  "ORDER CONFIRMED",
+  "DISPATCHED",
+  "OUT FOR DELIVERY",
+  "DELIVERED",
+  "CANCELLED",
 }

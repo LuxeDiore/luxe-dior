@@ -150,7 +150,6 @@ const ModifyProductInfo = ({
 
     await createProductServerHandler({ item, variants })
       .then(async (data) => {
-        console.log("data : ", data);
         if (data.success) {
           toast({
             title: data.message,
@@ -323,7 +322,6 @@ const ModifyProductInfo = ({
                                 <Trash2
                                   className="w-4 h-4"
                                   onClick={() => {
-                                    console.log("Clicked");
                                     let newVariants = variants.filter(
                                       (item, newVariantFilterKey) => {
                                         if (key1 !== newVariantFilterKey)

@@ -1,1 +1,8 @@
-export const deliveryStatus = ["Initialized", "Out for delivery", "Shipped"];
+export const deliveryStatus = [
+  "PAYMENT PENDING",
+  "ORDER CONFIRMED",
+  "DISPATCHED",
+  "OUT FOR DELIVERY",
+  "DELIVERED",
+  "CANCELLED",
+];
