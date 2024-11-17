@@ -29,7 +29,8 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
       },
     });
     for (var i = 0; i < order.items.length; i++) {
-      const id = order.items[i]._id;
+      const id = order.items[i].productId._id;
+      console.log(id);
       const product = await Product.findById(id);
       product.stock -= order.items[i].quantity;
       await product.save();
@@ -44,7 +45,6 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
     const deliveryCharge = order.deliveryCharge;
     const orderValue = order.orderValue;
 
-    console.log("email : ", email);
     await Promise.all([
       resend.emails.send({
         from: "Luxe Dior <jashanverma@luxedior.in>",
@@ -72,7 +72,6 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
       }),
     ]).then((res) => {
       console.log("Emails sent successfully...");
-      console.log("res : ", res);
     });
     return {
       success: true,
