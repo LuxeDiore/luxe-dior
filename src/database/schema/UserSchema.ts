@@ -6,41 +6,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-
-  shippingAddress: {
-    addressline1: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    country: {
-      type: String,
-    },
-    pinCode: {
-      type: String,
-    },
-  },
-  billingAddress: {
-    addressline1: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    country: {
-      type: String,
-    },
-    pinCode: {
-      type: String,
-    },
-  },
+  phoneNumber: { type: String, required: false },
+  emailAddress: { type: String, required: false },
   orders: [
     {
       type: mongoose.Schema.Types.ObjectId,

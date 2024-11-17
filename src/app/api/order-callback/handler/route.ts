@@ -7,6 +7,7 @@ export async function POST(req: Request) {
     const { response } = await req.json();
     const decodedResponse = Buffer.from(response, "base64").toString();
     const jsonResponse = JSON.parse(decodedResponse);
+    console.log(jsonResponse);
     const merchantTransactionId = jsonResponse.data.merchantTransactionId;
     const paymentStatus = jsonResponse.code;
     const currOrder = await Order.findOne({

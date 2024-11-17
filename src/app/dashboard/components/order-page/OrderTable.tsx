@@ -23,6 +23,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Info } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { deliveryStatus } from "@/data/deliveryStatus";
@@ -32,7 +34,15 @@ import { OrderType } from "@/types/order";
 import { updateOrderStatus } from "./action";
 import { useToast } from "@/components/ui/use-toast";
 import OrderItems from "@/components/OrderItems";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 const OrderTable = ({ keyword }: { keyword: string }) => {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [pageNo, setPageNo] = useState(1);
@@ -85,6 +95,7 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
               <TableHead>Method</TableHead>
               <TableHead>User</TableHead>
               <TableHead>Items</TableHead>
+              <TableHead>Additional Info</TableHead>
               <TableHead>Order Status</TableHead>
               <TableHead>Order Amount</TableHead>
               <TableHead>Delivery Charges</TableHead>
@@ -164,8 +175,36 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
                         </SelectContent>
                       </Select>
                     </TableCell>
-                    <TableCell>₹{order.deliveryCharge}</TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger>
+                          <Info className="h-4" />
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Order Items </DialogTitle>
+                          </DialogHeader>
+                          <div>
+                            <div>
+                              <b>Address : </b>
+                              {order?.shippingAddress?.addressline1},{" "}
+                              {order?.shippingAddress?.city},{""}
+                              {order?.shippingAddress?.state}-
+                              {order?.shippingAddress?.pinCode},{" "}
+                              {order?.shippingAddress?.country},{" "}
+                            </div>
+                            <div>
+                              <b>
+                                Contact Number :{" "}
+                                {order?.shippingAddress?.phoneNumber}{" "}
+                              </b>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
                     <TableCell>₹{order.orderValue}</TableCell>
+                    <TableCell>₹{order.deliveryCharge}</TableCell>
                     <TableCell className="text-right">
                       ₹{order.orderValue + order.deliveryCharge}
                     </TableCell>

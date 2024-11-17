@@ -18,6 +18,7 @@ export async function getAuthStatus() {
               if (!existingUser) {
                 await User.create({
                   clerkId: user?.id,
+                  emailAddress: user?.emailAddresses[0].emailAddress,
                 });
               }
             })

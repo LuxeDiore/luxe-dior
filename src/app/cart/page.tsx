@@ -10,6 +10,9 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import CartItemCard from "./components/cartItemCard";
 import { useToast } from "@/components/ui/use-toast";
 import Product from "@/database/schema/ProductSchema";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   Loader2,
@@ -47,6 +50,21 @@ const Page = () => {
   const [cartItems, setCartItems] = useState<configType[] | null>(null);
   const { toast } = useToast();
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    addressline1: "",
+    city: "",
+    state: "",
+    country: "",
+    phoneNumber: 0,
+    pinCode: "",
+  });
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   let deliveryCharge = 100;
   const getTotal = (cartItemsRes: configType[]) => {
@@ -62,12 +80,28 @@ const Page = () => {
 
   const paymentHandler = async () => {
     const user = await getUserName();
+
     if (user.success == false) {
       toast({
         variant: "destructive",
         title: "Please login to access this page",
       });
       router.push("/");
+      return;
+    }
+    if (
+      formData.addressline1.trim() == "" ||
+      formData.city.trim() == "" ||
+      formData.country.trim() == "" ||
+      formData.pinCode.trim() == "" ||
+      formData.state.trim() === "" ||
+      formData.phoneNumber.toLocaleString().trim().length < 9
+    ) {
+      toast({
+        variant: "destructive",
+        title:
+          "Please fill in valid details in  all fields in the address form",
+      });
       return;
     }
     const userName = user.name;
@@ -88,12 +122,21 @@ const Page = () => {
       const order = {
         user: { clerkId: clerkId, userName: userName },
         deliveryCharge: deliveryCharge,
+        shippingAddress: {
+          addressline1: formData.addressline1,
+          city: formData.city,
+          state: formData.state,
+          country: formData.country,
+          pinCode: formData.pinCode,
+          phoneNumber: formData.phoneNumber.toString(),
+        },
         orderValue: total - deliveryCharge,
         orderStatus: "PAYMENT PENDING",
         paymentStatus: res.code,
         paymentId: res.merchantTransactionId,
         items: items,
       };
+
       localStorage.setItem("paymentId", res.merchantTransactionId as string);
       const { success } = await createOrder(order);
       toast({
@@ -187,52 +230,226 @@ const Page = () => {
                   })}
                 </div>
               </ScrollArea>
-              {/* Cart Total */}
-              <div className="flex flex-col gap-5">
-                <h1 className="text-4xl font-semibold">Total</h1>
-                <ScrollArea className="max-h-[40rem] w-[100%]">
-                  <div className="flex flex-col items-start justify-center w-full">
-                    {cartItems?.map((item: configType, key: number) => {
-                      return (
-                        <div
-                          key={key}
-                          className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[100%]"
-                        >
-                          <p className="text-wrap text-sm md:text-lg col-span-7">
-                            {item.title} ({item.variantName})
-                          </p>
-                          <p className="text-sm md:text-lg col-span-3 ">
-                            Rs. {item.basePrice + item.additionalCost} x{" "}
-                            {item.itemQuantity}
-                          </p>
-                        </div>
-                      );
-                    })}
+              <div className="flex  flex-col-reverse gap-4">
+                {/* Cart Total */}
+                <div className="flex flex-col gap-5">
+                  <h1 className="text-4xl font-semibold">Total</h1>
+                  <ScrollArea className="max-h-[40rem] w-[100%]">
+                    <div className="flex flex-col items-start justify-center w-full">
+                      {cartItems?.map((item: configType, key: number) => {
+                        return (
+                          <div
+                            key={key}
+                            className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[100%]"
+                          >
+                            <p className="text-wrap text-sm md:text-lg col-span-7">
+                              {item.title} ({item.variantName})
+                            </p>
+                            <p className="text-sm md:text-lg col-span-3 ">
+                              Rs. {item.basePrice + item.additionalCost} x{" "}
+                              {item.itemQuantity}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                  <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
+                    <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
+                      Delivery Charge
+                    </p>
+                    <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
+                      Rs. {deliveryCharge}
+                    </p>
                   </div>
-                </ScrollArea>
-                <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
-                  <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
-                    Delivery Charge
-                  </p>
-                  <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
-                    Rs. {deliveryCharge}
-                  </p>
+                  <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
+                    <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
+                      Total
+                    </p>
+                    <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
+                      Rs. {total}
+                    </p>
+                  </div>
+                  <div className="w-full">
+                    <Button
+                      onClick={paymentHandler}
+                      className="w-full bg-green-500 flex gap-2 items-center justify-center text-lg font-semibold"
+                    >
+                      Pay now <LockKeyhole className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="grid grid-cols-10 gap-2 md:gap-11 items-start w-[calc(min(30rem , 80vw))]">
-                  <p className="text-wrap text-sm md:text-lg col-span-7 font-extrabold space-x-5">
-                    Total
-                  </p>
-                  <p className="text-sm md:text-lg col-span-3 space-x-5 font-extrabold">
-                    Rs. {total}
-                  </p>
-                </div>
-                <div className="w-full">
-                  <Button
-                    onClick={paymentHandler}
-                    className="w-full bg-green-500 flex gap-2 items-center justify-center text-lg font-semibold"
-                  >
-                    Pay now <LockKeyhole className="w-5 h-5" />
-                  </Button>
+                {/* Addresss */}
+                <div className="flex flex-col gap-5">
+                  <Card className="shipping-address-card w-[90vw]">
+                    <CardHeader>
+                      <CardTitle>Shipping Address</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <form>
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="addressline1">Address Line 1</Label>
+                            <Input
+                              id="addressline1"
+                              name="addressline1"
+                              value={formData.addressline1}
+                              onChange={handleChange}
+                              placeholder="123 Main Street"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="city">City</Label>
+                            <Input
+                              id="city"
+                              name="city"
+                              value={formData.city}
+                              onChange={handleChange}
+                              placeholder="Your City"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="state">State</Label>
+                            <Input
+                              id="state"
+                              name="state"
+                              value={formData.state}
+                              onChange={handleChange}
+                              placeholder="Your State"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="country">Country</Label>
+                            <Input
+                              id="country"
+                              name="country"
+                              value={formData.country}
+                              onChange={handleChange}
+                              placeholder="Your Country"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="pinCode">Pin Code</Label>
+                            <Input
+                              id="pinCode"
+                              name="pinCode"
+                              value={formData.pinCode}
+                              onChange={handleChange}
+                              placeholder="123456"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="phoneNumber">Phone Number</Label>
+                            <Input
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              value={formData.phoneNumber}
+                              onChange={handleChange}
+                              placeholder="123456"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                    </CardContent>
+                  </Card>
+                  {/* <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-800">
+                      Shipping Address
+                    </h2>
+                    <form onSubmit={handleSubmit}>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="addressline1"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Address Line 1
+                        </label>
+                        <input
+                          type="text"
+                          id="addressline1"
+                          name="addressline1"
+                          value={formData.addressline1}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="123 Main Street"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="city"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Your City"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="state"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          State
+                        </label>
+                        <input
+                          type="text"
+                          id="state"
+                          name="state"
+                          value={formData.state}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Your State"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="country"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Country
+                        </label>
+                        <input
+                          type="text"
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="Your Country"
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          htmlFor="pinCode"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Pin Code
+                        </label>
+                        <input
+                          type="text"
+                          id="pinCode"
+                          name="pinCode"
+                          value={formData.pinCode}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="123456"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        Submit
+                      </button>
+                    </form>
+                  </div> */}
                 </div>
               </div>
             </div>

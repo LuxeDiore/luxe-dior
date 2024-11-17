@@ -21,7 +21,7 @@ const OrderItems = ({ orderItems }: { orderItems: any }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <SquareArrowOutUpRight className="h-4 " />
+        <SquareArrowOutUpRight className="h-4" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

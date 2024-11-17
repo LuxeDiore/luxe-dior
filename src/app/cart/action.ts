@@ -152,7 +152,6 @@ export async function redirectPayment(price: number) {
     const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
     const APP_BE_URL_REDIRECT_URL = process.env.PHONE_PAY_APP_BE_URL;
     const APP_BE_URL_CALLBACK_URL = process.env.PHONE_PAY_APP_BE_URL;
-    price = 1;
     const userString = await getUser();
     if (userString == null) {
       return {
@@ -169,8 +168,8 @@ export async function redirectPayment(price: number) {
       merchantTransactionId: merchantTransactionId,
       merchantUserId: userId,
       amount: price * 100, // converting to paise
-      redirectUrl: `http://localhost:3000/api/order-callback`,
-      callbackUrl: `https://3c3b-103-110-255-216.ngrok-free.app/api/order-callback/handler`,
+      redirectUrl: APP_BE_URL_REDIRECT_URL,
+      callbackUrl: APP_BE_URL_CALLBACK_URL,
       redirectMode: "REDIRECT",
       paymentInstrument: {
         type: "PAY_PAGE",
@@ -223,6 +222,7 @@ export async function redirectPayment(price: number) {
 
 export async function createOrder(order: any) {
   try {
+    console.log(order);
     await Order.create(order);
     return {
       success: true,

@@ -12,6 +12,26 @@ const orderSchema = new mongoose.Schema({
     clerkId: { type: String, required: true },
   },
   deliveryCharge: { type: Number, required: true },
+  shippingAddress: {
+    addressline1: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    pinCode: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
+  },
   orderValue: {
     type: Number,
     required: true,
