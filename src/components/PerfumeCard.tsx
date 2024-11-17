@@ -42,10 +42,10 @@ const PerfumeCard = ({ item }: { item: productInfo }) => {
         })}
       </Slider>
       <div className="flex flex-col gap-2 py-3">
-        <div className="w-full flex justify-center item-center text-sm">
+        {/* <div className="w-full flex justify-center item-center text-sm">
           <Rating value={item?.averageRating} readOnly />(
           {item?.ratings?.length})
-        </div>
+        </div> */}
         <div className="flex flex-col w-full items-center">
           <p
             className={cn(

@@ -13,7 +13,6 @@ export async function updateOrderStatus(order: OrderType, status: string) {
       message: "Please login to make this request",
     };
   }
-  const name = user?.fullName;
   const email = user?.emailAddresses[0].emailAddress;
   const currOrder = await Order.findById(order._id);
 
@@ -37,7 +36,6 @@ export async function updateOrderStatus(order: OrderType, status: string) {
       to: [`${email}`],
       subject: "Order Status Update",
       react: OrderStatusUpdate({
-        name: name!,
         paymentId: paymentId,
         orderItems: items,
         deliveryCharge: deliveryCharge,
