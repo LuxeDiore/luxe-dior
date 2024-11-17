@@ -66,7 +66,7 @@ const Page = () => {
     }));
   };
 
-  let deliveryCharge = 100;
+  let deliveryCharge = 0;
   const getTotal = (cartItemsRes: configType[]) => {
     let sum = 0;
     for (let ele of cartItemsRes) {
