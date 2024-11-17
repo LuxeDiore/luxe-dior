@@ -7,7 +7,6 @@ export async function POST(req: Request) {
     const { response } = await req.json();
     const decodedResponse = Buffer.from(response, "base64").toString();
     const jsonResponse = JSON.parse(decodedResponse);
-    console.log(jsonResponse);
     const merchantTransactionId = jsonResponse.data.merchantTransactionId;
     const paymentStatus = jsonResponse.code;
     const currOrder = await Order.findOne({
@@ -39,7 +38,6 @@ export async function GET(req: NextRequest) {
     const currOrder = await Order.findOne({
       paymentId: paymentId,
     });
-    // console.log(currOrder);
     if (!currOrder) {
       return NextResponse.json(
         {
