@@ -111,7 +111,6 @@ const Page = ({ params }: { params: { productId: string } }) => {
     }
     const productString = res.product;
     const thisProduct: productInfo = JSON.parse(productString);
-
     setProduct(thisProduct);
     setConfig({
       ...config,
@@ -219,7 +218,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
               <div className="quantity flex gap-2 justify-center items-center">
                 <button
                   className="border rounded-xl w-[2rem] h-[2rem]"
-                  disabled={product?.stock === 0 ? true : false}
+                  disabled={product?.stock! <= 0 ? true : false}
                   onClick={() => {
                     if (itemQuantity === 1) {
                       return;
@@ -232,7 +231,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
                 </button>
                 {itemQuantity}
                 <button
-                  disabled={product?.stock === 0 ? true : false}
+                  disabled={product?.stock! <= 0 ? true : false}
                   className="border rounded-xl w-[2rem] h-[2rem]"
                   onClick={() => {
                     if (itemQuantity === product?.stock) {
@@ -249,7 +248,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
                 className="flex gap-2 text-lg h-[3rem] bg-green-400 hover:bg-green-600 w-[10rem]"
                 size="lg"
                 onClick={addToCartHandler}
-                disabled={product?.stock === 0 ? true : false}
+                disabled={product?.stock! <= 0 ? true : false}
               >
                 Add to Cart <ShoppingBasketIcon className="w-4 h-4" />
               </Button>
