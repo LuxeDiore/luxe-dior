@@ -30,13 +30,13 @@ const Page = ({ params }: { params: { paymentStatus: string } }) => {
         router.push("/");
         return;
       }
+      sendOrderConfirmationEmails(paymentId);
       setHeading("Thanks for placing your order");
       setDescription("Your order has placed successfully !!");
       toast({
         title: "You will soon recieve an email",
         variant: "default",
       });
-      sendOrderConfirmationEmails(paymentId);
       setTimeout(() => {
         router.push("/me");
       }, 4000);
@@ -45,6 +45,9 @@ const Page = ({ params }: { params: { paymentStatus: string } }) => {
       setDescription(
         "If you have been credited with the order value, please contact us to initiate refund."
       );
+      setTimeout(() => {
+        router.push("/");
+      }, 4000);
     }
   }, [isSuccess]);
   return (
