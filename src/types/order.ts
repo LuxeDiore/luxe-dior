@@ -1,7 +1,15 @@
 import { orderStatus } from "@/enums/order";
 
 interface User {
-  name: string;
+  userName: string;
+  clerkId: string;
+}
+
+export interface OrderItemconfigType {
+  basePrice: number;
+  quantity: number;
+  productId: string;
+  variantId: number;
 }
 interface Product {
   title: string;
@@ -15,13 +23,24 @@ interface Product {
   productPrice: number;
   productId: string;
 }
+interface shippingAddress {
+  phoneNumber: string;
+  addressline1: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
+}
 
 export interface OrderType {
   _id: string;
+  paymentId: string;
+  deliveryCharge: number;
   user: User;
   orderValue: number;
   orderStatus: orderStatus;
   paymentMethod: string;
   paymentStatus: string;
-  items: Product[];
+  shippingAddress: shippingAddress;
+  items: OrderItemconfigType[];
 }

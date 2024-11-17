@@ -112,9 +112,20 @@
   flex-direction: column;
   gap: 2rem;
 }
+.cart-main-container-2 {
+  flex-direction: column-reverse;
+  gap: 2rem;
+}
 
 @media all and (min-width: 1250px) {
   .cart-main-container {
+    flex-direction: row;
+    gap: 3rem;
+  }
+  .shipping-address-card {
+    width: 30rem !important;
+  }
+  .cart-main-container-2 {
     flex-direction: row;
     gap: 5rem;
   }

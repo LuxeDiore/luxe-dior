@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
   reviews: [
     {
       review: { type: String },
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "uSER" },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
   ],
   category: {

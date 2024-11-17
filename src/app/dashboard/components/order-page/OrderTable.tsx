@@ -23,16 +23,30 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Info } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { deliveryStatus } from "@/data/deliveryStatus";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { getAllOrdersServerHandler } from "../../actions/action";
 import { OrderType } from "@/types/order";
-
+import { updateOrderStatus } from "./action";
+import { useToast } from "@/components/ui/use-toast";
+import OrderItems from "@/components/OrderItems";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 const OrderTable = ({ keyword }: { keyword: string }) => {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [pageNo, setPageNo] = useState(1);
+  const { toast } = useToast();
   const itemsPerPage = 10;
   const nextPage = () => {
     const lastPossiblePage = Math.ceil(orders.length / itemsPerPage);
@@ -52,6 +66,21 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
     });
   };
 
+  const updateOrderStatusHandler = async (order: OrderType, status: string) => {
+    const res = await updateOrderStatus(order, status);
+    if (res.success) {
+      toast({
+        variant: "default",
+        title: res.message,
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: res.message,
+      });
+    }
+  };
+
   useEffect(() => {
     getAllOrders();
   }, []);
@@ -62,27 +91,49 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Payment Status</TableHead>
               <TableHead>Method</TableHead>
               <TableHead>User</TableHead>
               <TableHead>Items</TableHead>
+              <TableHead>Additional Info</TableHead>
               <TableHead>Order Status</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>Order Amount</TableHead>
+              <TableHead>Delivery Charges</TableHead>
+              <TableHead className="text-right">Total</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {orders
               ?.filter((order, key) => {
                 let trimLowerCaseKeyword = keyword.trim().toLowerCase();
-                let orderUserName = order.user.name.trim().toLowerCase();
+                let orderUserName = order.user?.clerkId!.trim().toLowerCase();
+                let orderStatus = order.orderStatus
+                  .toLocaleString()
+                  .trim()
+                  .toLowerCase();
+                let paymentStatus = order.paymentStatus.trim().toLowerCase();
+                let orderId = order.paymentId.trim().toLowerCase();
+                let paymentMethod = order.paymentMethod.trim().toLowerCase();
                 let thisPageStartingElement = (pageNo - 1) * 10 + 1;
                 let thisPageEndingElement = pageNo * 10 + 1;
                 if (
-                  (orderUserName === trimLowerCaseKeyword ||
-                    orderUserName.includes(trimLowerCaseKeyword) ||
-                    trimLowerCaseKeyword.includes(orderUserName)) &&
-                  key + 1 >= thisPageStartingElement &&
-                  key + 1 < thisPageEndingElement
+                  orderUserName === trimLowerCaseKeyword ||
+                  orderUserName.includes(trimLowerCaseKeyword) ||
+                  trimLowerCaseKeyword.includes(orderUserName) ||
+                  paymentStatus === trimLowerCaseKeyword ||
+                  paymentStatus.includes(trimLowerCaseKeyword) ||
+                  trimLowerCaseKeyword.includes(paymentStatus) ||
+                  orderId === trimLowerCaseKeyword ||
+                  orderId.includes(trimLowerCaseKeyword) ||
+                  trimLowerCaseKeyword.includes(orderId) ||
+                  orderStatus === trimLowerCaseKeyword ||
+                  orderStatus.includes(trimLowerCaseKeyword) ||
+                  trimLowerCaseKeyword.includes(paymentMethod) ||
+                  paymentMethod === trimLowerCaseKeyword ||
+                  orderStatus.includes(paymentMethod) ||
+                  (trimLowerCaseKeyword.includes(orderStatus) &&
+                    key + 1 >= thisPageStartingElement &&
+                    key + 1 < thisPageEndingElement)
                 ) {
                   return true;
                 }
@@ -91,13 +142,22 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
               ?.map((order, key) => {
                 return (
                   <TableRow key={key}>
-                    <TableCell className="font-medium">INV001</TableCell>
-                    <TableCell>{order.orderStatus}</TableCell>
+                    <TableCell className="font-medium">
+                      {order.paymentId}
+                    </TableCell>
+                    <TableCell>{order.paymentStatus}</TableCell>
                     <TableCell>{order.paymentMethod}</TableCell>
-                    <TableCell>{order.user.name}</TableCell>
-                    <TableCell>{order.items.length}</TableCell>
+                    <TableCell>{order.user.userName!}</TableCell>
+                    <TableCell className="flex gap-1 items-center">
+                      {order.items.length}{" "}
+                      <OrderItems orderItems={order.items} />
+                    </TableCell>
                     <TableCell>
-                      <Select>
+                      <Select
+                        onValueChange={async (status) => {
+                          await updateOrderStatusHandler(order, status);
+                        }}
+                      >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue
                             placeholder={order.orderStatus}
@@ -115,8 +175,38 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
                         </SelectContent>
                       </Select>
                     </TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger>
+                          <Info className="h-4" />
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Order Items </DialogTitle>
+                          </DialogHeader>
+                          <div>
+                            <div>
+                              <b>Address : </b>
+                              {order?.shippingAddress?.addressline1},{" "}
+                              {order?.shippingAddress?.city},{""}
+                              {order?.shippingAddress?.state}-
+                              {order?.shippingAddress?.pinCode},{" "}
+                              {order?.shippingAddress?.country},{" "}
+                            </div>
+                            <div>
+                              <b>
+                                Contact Number :{" "}
+                                {order?.shippingAddress?.phoneNumber}{" "}
+                              </b>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </TableCell>
+                    <TableCell>₹{order.orderValue}</TableCell>
+                    <TableCell>₹{order.deliveryCharge}</TableCell>
                     <TableCell className="text-right">
-                      ₹{order.orderValue}
+                      ₹{order.orderValue + order.deliveryCharge}
                     </TableCell>
                   </TableRow>
                 );
@@ -127,6 +217,7 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
           <PaginationContent className="w-full  flex justify-between">
             <PaginationItem>
               <PaginationPrevious
+                onClick={prevPage}
                 href="#"
                 className={cn(
                   buttonVariants({
@@ -139,6 +230,7 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
             <PaginationItem>
               <PaginationNext
                 href="#"
+                onClick={nextPage}
                 className={cn(
                   buttonVariants({
                     variant: "secondary",

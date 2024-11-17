@@ -118,11 +118,17 @@ export async function deleteProductServerHandler({ id }: { id: string }) {
 export async function getAllOrdersServerHandler() {
   try {
     await databasesConnect();
-    let orders = await Order.find().populate({
-      path: "user",
-      model: "User",
-      select: ["name"],
-    });
+    let orders = await Order.find()
+      .populate({
+        path: "user",
+        model: "User",
+        select: ["clerkId"],
+      })
+      .populate({
+        path: "items.productId",
+        model: "Product",
+      });
+    orders = orders.reverse();
     let ordersString = JSON.stringify(orders);
 
     return {

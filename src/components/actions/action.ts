@@ -100,19 +100,14 @@ export async function getSelfDetail({ clerkId }: { clerkId: string }) {
 export async function getSelfOrders({ clerkId }: { clerkId: string }) {
   try {
     await databasesConnect();
-    const user = await User.findOne({ clerkId: clerkId });
 
-    if (!user) {
-      return {
-        success: false,
-        message: "Please login to access this page.",
-        orders: "[]",
-      };
-    }
-
-    const userId = user._id;
-
-    const orders = await Order.find({ user: userId });
+    const orders = await Order.find({
+      "user.clerkId": clerkId,
+      paymentStatus: "PAYMENT_SUCCESS",
+    }).populate({
+      path: "items.productId",
+      model: "Product",
+    });
 
     return { success: true, message: "Orders fetched successfully.", orders };
   } catch (err: any) {
@@ -127,6 +122,22 @@ export async function getUser() {
     if (user == null) return { success: true, user: "" };
     const userString = JSON.stringify(user);
     return { success: true, user: userString };
+  } catch (err: any) {
+    return {
+      error: err.message,
+      success: false,
+    };
+  }
+}
+export async function getUserName() {
+  try {
+    const user = await currentUser();
+    if (user == null) return { success: false, name: "", clerkId: "" };
+    return {
+      success: true,
+      clerkId: JSON.stringify(user.id),
+      name: user.fullName,
+    };
   } catch (err: any) {
     return {
       error: err.message,

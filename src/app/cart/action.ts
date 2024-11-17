@@ -1,12 +1,13 @@
 "use server";
 import User from "@/database/schema/UserSchema";
 import { currentUser, User as ClerkUser } from "@clerk/nextjs/server";
+import Order from "@/database/schema/OrderSchema";
 import { User as UserType, cartItem, cartItemFilled } from "@/types/user";
 import dbConnect from "@/lib/db";
-import Product from "@/database/schema/ProductSchema"; // Check this path
 import axios from "axios";
-import { getUser } from "@/components/actions/action";
 import shajs from "sha.js";
+import mongoose from "mongoose";
+import { getUser } from "@/components/actions/action";
 
 export async function getCartItemsServerHandler() {
   try {
@@ -149,26 +150,26 @@ export async function redirectPayment(price: number) {
     const PHONE_PE_HOST_URL = process.env.PHONE_PAY_LINK;
     const SALT_INDEX = process.env.PHONE_PAY_SALT_INDEX;
     const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
-    const APP_BE_URL = process.env.PHONE_PAY_APP_BE_URL; // our application
-    price = 1;
-    let user: ClerkUser | null = await currentUser();
-    if (user == null) {
+    const APP_BE_URL_REDIRECT_URL = process.env.PHONE_PAY_APP_BE_URL;
+    const APP_BE_URL_CALLBACK_URL = process.env.PHONE_PAY_APP_BE_URL;
+    const userString = await getUser();
+    if (userString == null) {
       return {
         success: false,
-        message: "Please login to access this page;",
+        message: "Please login to access this page",
         redirectUrl: "",
       };
     }
-    let userId = user.id!;
-    // let userId = "MUID123";
+    let user: ClerkUser | null = JSON.parse(userString.user!);
+    let userId = user!.id!;
     const merchantTransactionId = "M" + Date.now();
     let normalPayLoad = {
       merchantId: MERCHANT_ID, //* PHONEPE_MERCHANT_ID . Unique for each account (private)
       merchantTransactionId: merchantTransactionId,
       merchantUserId: userId,
       amount: price * 100, // converting to paise
-      redirectUrl: `${APP_BE_URL}`,
-      callbackUrl: `${APP_BE_URL}`,
+      redirectUrl: APP_BE_URL_REDIRECT_URL,
+      callbackUrl: APP_BE_URL_CALLBACK_URL,
       redirectMode: "REDIRECT",
       paymentInstrument: {
         type: "PAY_PAGE",
@@ -200,17 +201,35 @@ export async function redirectPayment(price: number) {
       data,
       config
     );
+
     const { instrumentResponse } = serverData.data;
     return {
       redirectUrl: instrumentResponse.redirectInfo.url,
       message: "Initializing payment...",
       success: true,
+      merchantTransactionId: merchantTransactionId,
+      code: "PAYMENT INITIATED",
     };
   } catch (error: any) {
+    console.log(error);
     return {
       success: false,
       message: error.message,
       redirectUrl: "",
+    };
+  }
+}
+
+export async function createOrder(order: any) {
+  try {
+    console.log(order);
+    await Order.create(order);
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
     };
   }
 }
