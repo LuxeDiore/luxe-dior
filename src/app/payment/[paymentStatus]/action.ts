@@ -6,10 +6,12 @@ import { currentUser } from "@clerk/nextjs/server";
 import { OrderSuccessEmailTemplate } from "../../../../email-templates/order-success-email-template-admin";
 import { OrderSuccessEmailTemplateClient } from "../../../../email-templates/order-success-email-template-client";
 import Product from "@/database/schema/ProductSchema";
+import dbConnect from "@/lib/db";
 
 export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
   try {
-    console.log("Sending order confirmation mail....!");
+    await dbConnect();
+    console.log("Inside!");
     const user = await currentUser();
     if (!user) {
       return {
