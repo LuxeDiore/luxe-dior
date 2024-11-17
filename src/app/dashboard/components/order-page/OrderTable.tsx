@@ -95,8 +95,8 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
               <TableHead>Method</TableHead>
               <TableHead>User</TableHead>
               <TableHead>Items</TableHead>
-              <TableHead>Additional Info</TableHead>
               <TableHead>Order Status</TableHead>
+              <TableHead>Additional Info</TableHead>
               <TableHead>Order Amount</TableHead>
               <TableHead>Delivery Charges</TableHead>
               <TableHead className="text-right">Total</TableHead>
@@ -182,7 +182,7 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
                         </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
-                            <DialogTitle>Order Items </DialogTitle>
+                            <DialogTitle>Additional info </DialogTitle>
                           </DialogHeader>
                           <div>
                             <div>

@@ -20,14 +20,12 @@ const baseUrl = process.env.VERCEL_URL
   : "";
 export const OrderStatusUpdate = async ({
   orderItems,
-  name,
   paymentId,
   orderValue,
   deliveryCharge,
   newStatus,
 }: {
   orderItems: any[];
-  name: string;
   paymentId: string;
   orderValue: string;
   deliveryCharge: string;
