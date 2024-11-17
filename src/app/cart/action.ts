@@ -150,8 +150,8 @@ export async function redirectPayment(price: number) {
     const PHONE_PE_HOST_URL = process.env.PHONE_PAY_LINK;
     const SALT_INDEX = process.env.PHONE_PAY_SALT_INDEX;
     const SALT_KEY = process.env.PHONE_PAY_SALT_KEY;
-    const APP_BE_URL_REDIRECT_URL = process.env.PHONE_PAY_APP_BE_URL;
-    const APP_BE_URL_CALLBACK_URL = process.env.PHONE_PAY_APP_BE_URL;
+    const APP_BE_URL_REDIRECT_URL = process.env.APP_BE_URL_REDIRECT_URL;
+    const APP_BE_URL_CALLBACK_URL = process.env.APP_BE_URL_CALLBACK_URL;
     const userString = await getUser();
     if (userString == null) {
       return {
