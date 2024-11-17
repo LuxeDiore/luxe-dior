@@ -8,6 +8,7 @@ import { OrderSuccessEmailTemplateClient } from "../../../../email-templates/ord
 
 export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
   try {
+    console.log("Sending order confirmation mail....!");
     const user = await currentUser();
     if (!user) {
       return {
