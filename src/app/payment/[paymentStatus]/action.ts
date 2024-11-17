@@ -5,6 +5,7 @@ import { resend } from "@/lib/resend";
 import { currentUser } from "@clerk/nextjs/server";
 import { OrderSuccessEmailTemplate } from "../../../../email-templates/order-success-email-template-admin";
 import { OrderSuccessEmailTemplateClient } from "../../../../email-templates/order-success-email-template-client";
+import Product from "@/database/schema/ProductSchema";
 
 export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
   try {
@@ -25,6 +26,12 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
         model: "Product",
       },
     });
+    for (var i = 0; i < order.items.length; i++) {
+      const id = order.items[i]._id;
+      const product = await Product.findById(id);
+      product.stock -= order.items[i].quantity;
+      await product.save();
+    }
     if (!order) {
       return {
         success: false,
@@ -34,6 +41,8 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
     const items = order.items;
     const deliveryCharge = order.deliveryCharge;
     const orderValue = order.orderValue;
+
+    console.log("email : ", email);
     await Promise.all([
       resend.emails.send({
         from: "Luxe Dior <jashanverma@luxedior.in>",
@@ -59,7 +68,10 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
           orderValue: orderValue,
         }),
       }),
-    ]);
+    ]).then((res) => {
+      console.log("Emails sent successfully...");
+      console.log("res : ", res);
+    });
     return {
       success: true,
       message: "Email sent successfully.",
