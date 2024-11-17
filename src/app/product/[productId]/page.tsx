@@ -111,6 +111,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
     }
     const productString = res.product;
     const thisProduct: productInfo = JSON.parse(productString);
+
     setProduct(thisProduct);
     setConfig({
       ...config,
@@ -248,6 +249,7 @@ const Page = ({ params }: { params: { productId: string } }) => {
                 className="flex gap-2 text-lg h-[3rem] bg-green-400 hover:bg-green-600 w-[10rem]"
                 size="lg"
                 onClick={addToCartHandler}
+                disabled={product?.stock === 0 ? true : false}
               >
                 Add to Cart <ShoppingBasketIcon className="w-4 h-4" />
               </Button>

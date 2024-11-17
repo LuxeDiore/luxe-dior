@@ -11,7 +11,7 @@ import dbConnect from "@/lib/db";
 export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
   try {
     await dbConnect();
-    console.log("Inside!");
+    console.log("Sending order confirmation mail....");
     const user = await currentUser();
     if (!user) {
       return {
@@ -30,7 +30,6 @@ export async function sendOrderConfirmationEmailsHandler(paymentId: string) {
     });
     for (var i = 0; i < order.items.length; i++) {
       const id = order.items[i].productId._id;
-      console.log(id);
       const product = await Product.findById(id);
       product.stock -= order.items[i].quantity;
       await product.save();
