@@ -38,7 +38,7 @@ const OrderItems = ({ orderItems }: { orderItems: any }) => {
               item?.productId?.variants[variantId]?.additionalCost;
             const itemId = item?.productId?._id;
             return (
-              <div className="flex gap-2 flex-col">
+              <div className="flex gap-2 flex-col" key={key}>
                 <div
                   className="w-full flex flex-row gap-2  items-center"
                   key={key}

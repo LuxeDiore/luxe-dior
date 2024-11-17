@@ -7,7 +7,7 @@ import { CircleCheckBig } from "lucide-react";
 import { sendOrderConfirmationEmailsHandler } from "./action";
 import { X } from "lucide-react";
 
-const page = ({ params }: { params: { paymentStatus: string } }) => {
+const Page = ({ params }: { params: { paymentStatus: string } }) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isSuccess, setIsSuccess] = useState(
@@ -72,4 +72,4 @@ const page = ({ params }: { params: { paymentStatus: string } }) => {
   );
 };
 
-export default page;
+export default Page;
