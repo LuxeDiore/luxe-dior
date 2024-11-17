@@ -170,7 +170,7 @@ export async function redirectPayment(price: number) {
       merchantUserId: userId,
       amount: price * 100, // converting to paise
       redirectUrl: `http://localhost:3000/api/order-callback`,
-      callbackUrl: `https://768e-103-110-255-216.ngrok-free.app/api/order-callback/handler`,
+      callbackUrl: `https://3c3b-103-110-255-216.ngrok-free.app/api/order-callback/handler`,
       redirectMode: "REDIRECT",
       paymentInstrument: {
         type: "PAY_PAGE",

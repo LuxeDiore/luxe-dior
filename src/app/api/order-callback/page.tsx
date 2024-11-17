@@ -8,8 +8,8 @@ import { useToast } from "@/components/ui/use-toast";
 const page = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const [requestCount, setRequestCount] = useState(0);
   useEffect(() => {
-    const [requestCount, setRequestCount] = useState(0);
     setTimeout(async () => {
       const paymentId = localStorage.getItem("paymentId");
       if (!paymentId) {
@@ -49,10 +49,12 @@ const page = () => {
               variant: "default",
             });
             router.push("/payment/success");
+          } else if (paymentStatus === "PAYMENT INITIATED") {
+            console.log("Not yet updated...");
           } else {
             toast({
               title:
-                "Payment Failed.If you have been credited with the order value, please contact us to initiate refund.",
+                "Payment failed.If you have been credited with the order value, please contact us to initiate refund.",
               variant: "destructive",
             });
             router.push("/payment/failed");
@@ -63,7 +65,7 @@ const page = () => {
       } finally {
         setRequestCount(requestCount + 1);
       }
-    }, 2000);
+    }, 5000);
   }, []);
   return (
     <div className="w-full mt-24 flex justify-center">

@@ -39,7 +39,6 @@ const Page = ({ params }: { params: { categoryName: string } }) => {
     } else {
       const products = JSON.parse(res.productStrings);
       setItems(products);
-      console.log(products);
     }
   };
   const nextPage = () => {

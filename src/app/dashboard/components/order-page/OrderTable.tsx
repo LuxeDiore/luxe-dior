@@ -31,6 +31,7 @@ import { getAllOrdersServerHandler } from "../../actions/action";
 import { OrderType } from "@/types/order";
 import { updateOrderStatus } from "./action";
 import { useToast } from "@/components/ui/use-toast";
+import OrderItems from "@/components/OrderItems";
 
 const OrderTable = ({ keyword }: { keyword: string }) => {
   const [orders, setOrders] = useState<OrderType[]>([]);
@@ -136,7 +137,10 @@ const OrderTable = ({ keyword }: { keyword: string }) => {
                     <TableCell>{order.paymentStatus}</TableCell>
                     <TableCell>{order.paymentMethod}</TableCell>
                     <TableCell>{order.user.userName!}</TableCell>
-                    <TableCell>{order.items.length}</TableCell>
+                    <TableCell className="flex gap-1 items-center">
+                      {order.items.length}{" "}
+                      <OrderItems orderItems={order.items} />
+                    </TableCell>
                     <TableCell>
                       <Select
                         onValueChange={async (status) => {

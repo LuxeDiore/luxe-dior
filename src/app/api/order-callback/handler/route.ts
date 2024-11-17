@@ -18,7 +18,6 @@ export async function POST(req: Request) {
       currOrder.paymentMethod = paymentMethod;
       currOrder.orderStatus = "ORDER CONFIRMED";
     }
-
     await currOrder.save();
     return NextResponse.json({
       success: true,
